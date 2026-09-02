@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-02T17:40:16.803240+00:00",
+  "total_users": 10000,
+  "total_features": 28,
+  "feature_list": [
+    "average_monthly_income",
+    "average_monthly_expense",
+    "savings_rate",
+    "average_transaction_amount",
+    "median_transaction_amount",
+    "expense_volatility",
+    "income_volatility",
+    "transaction_frequency",
+    "food_ratio",
+    "shopping_ratio",
+    "transport_ratio",
+    "bills_ratio",
+    "discretionary_ratio",
+    "weekend_spending_ratio",
+    "monthly_expense_change",
+    "monthly_income_change",
+    "largest_transaction",
+    "largest_transaction_ratio",
+    "number_of_expenses",
+    "number_of_income_transactions",
+    "monthly_savings_variance",
+    "category_spending_entropy",
+    "education_ratio",
+    "entertainment_ratio",
+    "healthcare_ratio",
+    "travel_ratio",
+    "subscriptions_ratio",
+    "other_ratio"
+  ],
+  "feature_statistics": {
+    "average_monthly_income": {
+      "mean": 53334.006,
+      "std": 8192.8235,
+      "min": 22434.37,
+      "max": 91739.22,
+      "median": 52277.575
+    },
+    "average_monthly_expense": {
+      "mean": 43955.1574,
+      "std": 9289.3739,
+      "min": 13665.1,
+      "max": 85616.32,
+      "median": 42997.495
+    },
+    "savings_rate": {
+      "mean": 16.051,
+      "std": 20.3435,
+      "min": -65.6709,
+      "max": 57.0909,
+      "median": 18.7131
+    },
+    "average_transaction_amount": {
+      "mean": 1395.1691,
+      "std": 289.6608,
+      "min": 482.3,
+      "max": 2883.24,
+      "median": 1351.31
+    },
+    "median_transaction_amount": {
+      "mean": 880.5972,
+      "std": 201.2961,
+      "min": 253.27,
+      "max": 1854.66,
+      "median": 854.605
+    },
+    "expense_volatility": {
+      "mean": 0.1986,
+      "std": 0.132,
+      "min": 0.0024,
+      "max": 1.1263,
+      "median": 0.1604
+    },
+    "income_volatility": {
+      "mean": 0.0515,
+      "std": 0.1259,
+      "min": 0.0,
+      "max": 1.2729,
+      "median": 0.0149
+    },
+    "transaction_frequency": {
+      "mean": 32.0461,
+      "std": 6.0544,
+      "min": 16.0,
+      "max": 50.0,
+      "median": 31.57
+    },
+    "food_ratio": {
+      "mean": 0.2404,
+      "std": 0.0746,
+      "min": 0.0365,
+      "max": 0.6387,
+      "median": 0.2299
+    },
+    "shopping_ratio": {
+      "mean": 0.1682,
+      "std": 0.0883,
+      "min": 0.0009,
+      "max": 0.5412,
+      "median": 0.1567
+    },
+    "transport_ratio": {
+      "mean": 0.1035,
+      "std": 0.0355,
+      "min": 0.0,
+      "max": 0.3131,
+      "median": 0.0999
+    },
+    "bills_ratio": {
+      "mean": 0.1812,
+      "std": 0.0615,
+      "min": 0.0329,
+      "max": 0.4754,
+      "median": 0.1715
+    },
+    "discretionary_ratio": {
+      "mean": 0.5347,
+      "std": 0.0892,
+      "min": 0.1811,
+      "max": 0.8223,
+      "median": 0.5426
+    },
+    "weekend_spending_ratio": {
+      "mean": 0.3741,
+      "std": 0.1028,
+      "min": 0.0674,
+      "max": 0.7851,
+      "median": 0.3647
+    },
+    "monthly_expense_change": {
+      "mean": -0.0004,
+      "std": 0.0752,
+      "min": -1.0116,
+      "max": 1.0136,
+      "median": 0.0003
+    },
+    "monthly_income_change": {
+      "mean": -0.0002,
+      "std": 0.0432,
+      "min": -1.1024,
+      "max": 0.8916,
+      "median": 0.0
+    },
+    "largest_transaction": {
+      "mean": 13047.4107,
+      "std": 4922.3869,
+      "min": 2360.59,
+      "max": 49568.76,
+      "median": 12330.155
+    },
+    "largest_transaction_ratio": {
+      "mean": 0.0457,
+      "std": 0.0232,
+      "min": 0.012,
+      "max": 0.2384,
+      "median": 0.0396
+    },
+    "number_of_expenses": {
+      "mean": 240.6882,
+      "std": 103.809,
+      "min": 48.0,
+      "max": 558.0,
+      "median": 233.0
+    },
+    "number_of_income_transactions": {
+      "mean": 9.3556,
+      "std": 4.4421,
+      "min": 3.0,
+      "max": 33.0,
+      "median": 9.0
+    },
+    "monthly_savings_variance": {
+      "mean": 85012289.8087,
+      "std": 105578615.8477,
+      "min": 10080.21,
+      "max": 1492792467.58,
+      "median": 49691649.06
+    },
+    "category_spending_entropy": {
+      "mean": 1.997,
+      "std": 0.0965,
+      "min": 1.3465,
+      "max": 2.2269,
+      "median": 2.0117
+    },
+    "education_ratio": {
+      "mean": 0.0434,
+      "std": 0.0231,
+      "min": 0.0,
+      "max": 0.25,
+      "median": 0.0399
+    },
+    "entertainment_ratio": {
+      "mean": 0.0807,
+      "std": 0.0392,
+      "min": 0.0,
+      "max": 0.3248,
+      "median": 0.0765
+    },
+    "healthcare_ratio": {
+      "mean": 0.0432,
+      "std": 0.023,
+      "min": 0.0,
+      "max": 0.2445,
+      "median": 0.0395
+    },
+    "travel_ratio": {
+      "mean": 0.0454,
+      "std": 0.0286,
+      "min": 0.0,
+      "max": 0.2373,
+      "median": 0.0393
+    },
+    "subscriptions_ratio": {
+      "mean": 0.042,
+      "std": 0.0223,
+      "min": 0.0,
+      "max": 0.2256,
+      "median": 0.0386
+    },
+    "other_ratio": {
+      "mean": 0.0518,
+      "std": 0.025,
+      "min": 0.0,
+      "max": 0.2154,
+      "median": 0.0482
+    }
+  }
+}
