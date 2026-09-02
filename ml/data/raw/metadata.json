@@ -1,30 +1,30 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-02T17:20:21.549297+00:00",
+  "generated_at": "2026-09-02T17:30:41.467451+00:00",
   "seed": 42,
   "num_users": 10000,
-  "total_transactions": 2490340,
-  "total_income_transactions": 82863,
-  "total_expense_transactions": 2407477,
-  "total_anomalies": 7511,
-  "anomaly_rate_percent": 0.302,
+  "total_transactions": 2500438,
+  "total_income_transactions": 93556,
+  "total_expense_transactions": 2406882,
+  "total_anomalies": 7794,
+  "anomaly_rate_percent": 0.312,
   "profile_distribution": {
-    "Consistent Spender": 1035,
-    "Variable Income": 1015,
-    "Goal-Oriented Saver": 1012,
-    "Weekend Spender": 1012,
-    "Overspender": 1009,
-    "Impulse Spender": 993,
-    "Shopping Heavy": 992,
-    "Food Heavy": 986,
-    "Good Saver": 976,
-    "Irregular Spender": 970
+    "Impulse Spender": 1058,
+    "Overspender": 1044,
+    "Food Heavy": 1025,
+    "Shopping Heavy": 1022,
+    "Goal-Oriented Saver": 994,
+    "Consistent Spender": 985,
+    "Irregular Spender": 976,
+    "Good Saver": 969,
+    "Variable Income": 965,
+    "Weekend Spender": 962
   },
   "anomaly_type_distribution": {
-    "weekend_spike": 1579,
-    "frequency_burst": 1528,
-    "spending_anomaly": 1484,
-    "savings_decline": 1482,
-    "category_increase": 1438
+    "weekend_spike": 1605,
+    "frequency_burst": 1599,
+    "spending_anomaly": 1562,
+    "savings_decline": 1536,
+    "category_increase": 1492
   }
 }

@@ -151,6 +151,26 @@ class SyntheticDataGenerator:
                     })
                     tx_counter += 1
 
+                # Occasional supplementary income (Refund, Gift, Allowance, Other)
+                if self.rng.random() < 0.15:
+                    supp_cat = self.rng.choice(["Refund", "Gift", "Allowance", "Other"])
+                    supp_amt = round(float(self.rng.uniform(500.0, 4000.0)), 2)
+                    supp_day = self.rng.randint(5, days_in_month + 1)
+                    supp_date = datetime.date(target_year, target_month, supp_day)
+                    transactions_records.append({
+                        "transaction_id": f"txn_{tx_counter:09d}",
+                        "user_id": user_id,
+                        "type": "income",
+                        "amount": supp_amt,
+                        "category": supp_cat,
+                        "payment_method": "UPI" if supp_cat in ["Refund", "Gift"] else "Bank Transfer",
+                        "transaction_date": supp_date.isoformat(),
+                        "description": self.rng.choice(CATEGORY_DESCRIPTIONS.get(supp_cat, ["Income credit"])),
+                        "is_anomaly": False,
+                        "anomaly_type": None,
+                    })
+                    tx_counter += 1
+
                 # Monthly expense budget calculation
                 expense_ratio = max(0.20, float(self.rng.normal(params.expense_ratio_mean, params.expense_ratio_std)))
                 monthly_expense_budget = monthly_income * expense_ratio
