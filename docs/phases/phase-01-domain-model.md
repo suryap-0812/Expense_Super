@@ -1,11 +1,13 @@
 # Phase 1: Domain Model & Financial Rules Report
 
 ## Objective
+
 Design and implement the core financial domain models, entities, value objects, platform-independent repository abstractions, and deterministic financial rules engine in `@expense-tracker/domain`, with 100% automated test coverage and zero UI dependencies.
 
 ## Completed Artifacts
 
 ### 1. Domain Entities & Value Objects
+
 - **Transaction** (`packages/domain/src/types/transaction.ts`):
   - `TransactionType` (`"income" | "expense"`)
   - `PaymentMethod` (`"UPI" | "Cash" | "Credit Card" | "Debit Card" | "Net Banking" | "Bank Transfer" | "Other"`)
@@ -28,6 +30,7 @@ Design and implement the core financial domain models, entities, value objects, 
   - `UserSettings`, `CurrencyCode`, `ThemeMode`, `AppTerminology`, `DEFAULT_USER_SETTINGS`
 
 ### 2. Repository Abstractions
+
 - `packages/domain/src/types/repository.ts` defines clean platform-independent contracts:
   - `ITransactionRepository`
   - `ICategoryRepository`
@@ -37,6 +40,7 @@ Design and implement the core financial domain models, entities, value objects, 
   - `ISettingsRepository`
 
 ### 3. Deterministic Financial Rules Engine
+
 - `packages/domain/src/rules/financial-rules.ts`:
   - `calculateTotalIncome(transactions)`: SUM(income amounts)
   - `calculateTotalExpenses(transactions)`: SUM(expense amounts)
@@ -50,11 +54,13 @@ Design and implement the core financial domain models, entities, value objects, 
   - `roundCurrency(amount)`: Floating-point precision error mitigation
 
 ### 4. Test Suites
+
 - `packages/domain/tests/financial-rules.test.ts`: 19 tests verifying calculations, boundary cases, division by zero, floating point math, allocation capacity invariants, and summary generation.
 - `packages/domain/tests/entities.test.ts`: 5 tests verifying category seeds, uniqueness of IDs, and default settings.
 - `tests/foundation.test.ts`: 7 tests verifying cross-package resolution.
 
 ## Validation Results
+
 - **TypeScript**: 0 errors across 8 workspace projects (`pnpm run typecheck`)
 - **ESLint**: 0 errors (`pnpm run lint`)
 - **Prettier**: Clean formatting across all files (`pnpm run format:check`)
