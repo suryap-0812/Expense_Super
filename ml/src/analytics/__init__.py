@@ -16,6 +16,16 @@ from .financial_analytics import (
     calculate_volatility,
     generate_financial_analytics,
 )
+from .pattern_analysis import (
+    calculate_linear_trend,
+    analyze_spending_trend,
+    analyze_savings_trend,
+    analyze_category_changes,
+    analyze_weekend_behavior,
+    analyze_spending_volatility,
+    analyze_transaction_frequency,
+    generate_pattern_analysis_report,
+)
 
 __all__ = [
     "calculate_income",
@@ -29,4 +39,12 @@ __all__ = [
     "calculate_savings_change",
     "calculate_volatility",
     "generate_financial_analytics",
+    "calculate_linear_trend",
+    "analyze_spending_trend",
+    "analyze_savings_trend",
+    "analyze_category_changes",
+    "analyze_weekend_behavior",
+    "analyze_spending_volatility",
+    "analyze_transaction_frequency",
+    "generate_pattern_analysis_report",
 ]

@@ -1,6 +1,6 @@
 /**
  * Financial Analytics Types & Data Contracts
- * Defined for Phase 6 deterministic financial analysis.
+ * Defined for Phase 6 deterministic financial analysis and Phase 8 statistical pattern analysis.
  */
 
 export interface CategorySpendingItem {
@@ -53,4 +53,83 @@ export interface FinancialAnalyticsReport {
   savingsChange: TrendChange | null;
   expenseVolatility: VolatilityMetrics;
   incomeVolatility: VolatilityMetrics;
+}
+
+// ==========================================
+// Phase 8: Statistical Pattern Analysis Types
+// ==========================================
+
+export type PatternDirection = "increasing" | "decreasing" | "stable";
+
+export interface StatisticalTrendResult {
+  slope: number;
+  intercept: number;
+  rSquared: number;
+  percentageGrowth: number | null;
+  direction: PatternDirection;
+  summary: string;
+}
+
+export type CategoryShiftStatus = "growing" | "declining" | "stable" | "new" | "inactive";
+
+export interface CategoryShift {
+  category: string;
+  previousAmount: number;
+  currentAmount: number;
+  absoluteChange: number;
+  percentageChange: number | null;
+  status: CategoryShiftStatus;
+}
+
+export interface CategoryDynamics {
+  shifts: CategoryShift[];
+  growingCategories: CategoryShift[];
+  decliningCategories: CategoryShift[];
+  stableCategories: CategoryShift[];
+  topGrowingCategory: string | null;
+  topDecliningCategory: string | null;
+}
+
+export interface WeekendBehaviorMetrics {
+  weekendExpense: number;
+  weekdayExpense: number;
+  totalExpense: number;
+  weekendSpendingRatio: number; // weekendExpense / totalExpense
+  weekendTransactionCount: number;
+  weekdayTransactionCount: number;
+  weekendTransactionRatio: number; // weekendCount / totalCount
+  averageWeekendTransaction: number;
+  averageWeekdayTransaction: number;
+  weekendSpendingPremium: number; // avgWeekend / avgWeekday
+}
+
+export type VolatilityRating = "low" | "moderate" | "high" | "volatile";
+
+export interface VolatilityAnalysis extends VolatilityMetrics {
+  rating: VolatilityRating;
+}
+
+export interface TransactionBurstDay {
+  date: string;
+  transactionCount: number;
+  totalAmount: number;
+}
+
+export interface FrequencyMetrics {
+  totalTransactions: number;
+  activeDaysCount: number;
+  spanDaysCount: number;
+  dailyVelocity: number;
+  averageInterTransactionDays: number;
+  maxDailyTransactionCount: number;
+  burstDays: TransactionBurstDay[];
+}
+
+export interface FinancialPatternReport {
+  spendingTrend: StatisticalTrendResult | null;
+  savingsTrend: StatisticalTrendResult | null;
+  categoryDynamics: CategoryDynamics;
+  weekendBehavior: WeekendBehaviorMetrics;
+  spendingVolatility: VolatilityAnalysis;
+  transactionFrequency: FrequencyMetrics;
 }
