@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+.turbo
+coverage
+pnpm-lock.yaml
+ml/data
+ml/models
+.agent/
+docs/Project_document.md

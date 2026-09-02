@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@expense-tracker/domain": ["packages/domain/src"],
+      "@expense-tracker/domain/*": ["packages/domain/src/*"],
+      "@expense-tracker/schemas": ["packages/schemas/src"],
+      "@expense-tracker/schemas/*": ["packages/schemas/src/*"],
+      "@expense-tracker/state": ["packages/state/src"],
+      "@expense-tracker/state/*": ["packages/state/src/*"],
+      "@expense-tracker/analytics": ["packages/analytics/src"],
+      "@expense-tracker/analytics/*": ["packages/analytics/src/*"],
+      "@expense-tracker/ml-contract": ["packages/ml-contract/src"],
+      "@expense-tracker/ml-contract/*": ["packages/ml-contract/src/*"],
+      "@expense-tracker/ui": ["packages/ui/src"],
+      "@expense-tracker/ui/*": ["packages/ui/src/*"],
+      "@expense-tracker/utils": ["packages/utils/src"],
+      "@expense-tracker/utils/*": ["packages/utils/src/*"]
+    }
+  },
+  "include": ["packages/*/src/**/*", "tests/**/*", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist", "build"]
+}

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build artifacts & caches
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+
+# Test & Coverage
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python & ML
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.onnx
+ml/data/raw/*.csv
+ml/data/raw/*.json
+ml/data/processed/*.csv
+ml/data/processed/*.parquet
+ml/data/features/*.parquet
+!ml/data/raw/.gitkeep
+!ml/data/processed/.gitkeep
+!ml/data/features/.gitkeep
+!ml/models/.gitkeep
+
+# IDEs & OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+.agent/
