@@ -37,6 +37,7 @@ venv/
 .coverage
 htmlcov/
 *.onnx
+*.joblib
 ml/data/raw/*.csv
 ml/data/raw/*.parquet
 ml/data/processed/*.csv
@@ -49,6 +50,7 @@ ml/data/features/*.csv
 !ml/data/features/.gitkeep
 !ml/data/features/feature_metadata.json
 !ml/models/.gitkeep
+!ml/models/anomaly_model_metadata.json
 
 # IDEs & OS
 .DS_Store

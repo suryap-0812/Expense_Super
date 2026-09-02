@@ -1,0 +1,88 @@
+{
+  "model_type": "IsolationForest",
+  "schema_version": "1.0",
+  "trained_at": "2026-09-02T18:01:25.369939+00:00",
+  "n_samples": 10000,
+  "configuration": {
+    "n_estimators": 100,
+    "contamination": 0.05,
+    "random_state": 42
+  },
+  "feature_list": [
+    "savings_rate",
+    "expense_volatility",
+    "income_volatility",
+    "average_monthly_expense",
+    "average_monthly_income",
+    "food_ratio",
+    "shopping_ratio",
+    "transport_ratio",
+    "bills_ratio",
+    "discretionary_ratio",
+    "weekend_spending_ratio",
+    "largest_transaction_ratio",
+    "transaction_frequency",
+    "category_spending_entropy"
+  ],
+  "feature_baselines": {
+    "mean": {
+      "savings_rate": 16.051,
+      "expense_volatility": 0.1986,
+      "income_volatility": 0.0515,
+      "average_monthly_expense": 43955.1602,
+      "average_monthly_income": 53334.0078,
+      "food_ratio": 0.2404,
+      "shopping_ratio": 0.1682,
+      "transport_ratio": 0.1035,
+      "bills_ratio": 0.1812,
+      "discretionary_ratio": 0.5347,
+      "weekend_spending_ratio": 0.3741,
+      "largest_transaction_ratio": 0.0457,
+      "transaction_frequency": 32.0462,
+      "category_spending_entropy": 1.997
+    },
+    "std": {
+      "savings_rate": 20.3425,
+      "expense_volatility": 0.1319,
+      "income_volatility": 0.1259,
+      "average_monthly_expense": 9288.9092,
+      "average_monthly_income": 8192.4131,
+      "food_ratio": 0.0746,
+      "shopping_ratio": 0.0883,
+      "transport_ratio": 0.0355,
+      "bills_ratio": 0.0614,
+      "discretionary_ratio": 0.0892,
+      "weekend_spending_ratio": 0.1028,
+      "largest_transaction_ratio": 0.0232,
+      "transaction_frequency": 6.0541,
+      "category_spending_entropy": 0.0964
+    }
+  },
+  "validation_results": {
+    "predicted_anomaly_count": 500,
+    "predicted_anomaly_percentage": 5.0,
+    "profile_anomaly_rates": {
+      "Consistent Spender": 0.71,
+      "Food Heavy": 2.24,
+      "Goal-Oriented Saver": 7.04,
+      "Good Saver": 8.88,
+      "Impulse Spender": 1.89,
+      "Irregular Spender": 2.56,
+      "Overspender": 4.31,
+      "Shopping Heavy": 3.03,
+      "Variable Income": 18.24,
+      "Weekend Spender": 1.77
+    },
+    "overspender_vs_saver_roc_auc": 0.5727,
+    "score_summary": {
+      "min": -0.1845,
+      "max": 0.1455,
+      "mean": 0.0736,
+      "median": 0.0806
+    }
+  },
+  "artifacts": {
+    "joblib_path": "ml/models/isolation_forest.joblib",
+    "onnx_path": "ml/models/isolation_forest.onnx"
+  }
+}
