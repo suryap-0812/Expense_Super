@@ -1,11 +1,13 @@
 # Phase 2: Zod Schemas & Shared Contracts Report
 
 ## Objective
+
 Implement runtime validation boundaries across the application stack using Zod in `@expense-tracker/schemas`, deriving TypeScript types, ensuring data contracts for domain inputs, ML pipeline interfaces, LLM output validation, and portable backup import/export payloads.
 
 ## Completed Artifacts
 
 ### 1. Zod Schemas
+
 - **Transaction Schemas** (`packages/schemas/src/transaction.schema.ts`):
   - `TransactionTypeSchema`: `"income" | "expense"`
   - `PaymentMethodSchema`: `"UPI" | "Cash" | "Credit Card" | "Debit Card" | "Net Banking" | "Bank Transfer" | "Other"`
@@ -37,13 +39,16 @@ Implement runtime validation boundaries across the application stack using Zod i
   - `DataExportSchema` & `DataImportSchema`: Validates full portable backup archive.
 
 ### 2. Derived TypeScript Types
+
 All schemas export derived types via `z.infer<typeof ...>` (e.g. `CreateTransactionInput`, `TransactionDto`, `MLInputContract`, `MLOutputContract`, `LLMGuidanceResponse`, etc.).
 
 ### 3. Test Suite
+
 - `packages/schemas/tests/schemas.test.ts`: 24 unit tests verifying valid inputs, non-positive number rejections, decimal place restrictions, invalid date rejections, empty partial update rejections, negative balance rejections, ML contract structure, LLM safe parsing and guardrails, settings limits, and full data export schemas.
 - Total workspace test count: **55 passed tests** (100% pass rate).
 
 ## Validation Results
+
 - **TypeScript**: 0 errors across all workspace packages (`pnpm run typecheck`)
 - **ESLint**: 0 errors (`pnpm run lint`)
 - **Prettier**: Clean formatting (`pnpm run format:check`)

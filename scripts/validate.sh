@@ -20,6 +20,9 @@ pnpm run format:check
 echo "5. Running Vitest test suite..."
 pnpm run test
 
+echo "6. Running Python ML test suite..."
+pnpm run ml:test
+
 echo "==========================================="
-echo "All Phase 0 validation checks PASSED!"
+echo "All validation checks PASSED!"
 echo "==========================================="

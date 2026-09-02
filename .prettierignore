@@ -5,6 +5,9 @@ build
 coverage
 pnpm-lock.yaml
 ml/data
+ml/data/**
 ml/models
 .agent/
 docs/Project_document.md
+.venv
+.venv/**

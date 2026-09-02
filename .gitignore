@@ -38,11 +38,12 @@ venv/
 htmlcov/
 *.onnx
 ml/data/raw/*.csv
-ml/data/raw/*.json
+ml/data/raw/*.parquet
 ml/data/processed/*.csv
 ml/data/processed/*.parquet
 ml/data/features/*.parquet
 !ml/data/raw/.gitkeep
+!ml/data/raw/metadata.json
 !ml/data/processed/.gitkeep
 !ml/data/features/.gitkeep
 !ml/models/.gitkeep
