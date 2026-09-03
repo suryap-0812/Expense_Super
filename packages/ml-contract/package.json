@@ -15,5 +15,11 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc -b"
+  },
+  "dependencies": {
+    "@expense-tracker/domain": "workspace:*",
+    "@expense-tracker/schemas": "workspace:*",
+    "@expense-tracker/analytics": "workspace:*",
+    "zod": "^3.23.8"
   }
 }

@@ -38,7 +38,20 @@ importers:
 
   packages/domain: {}
 
-  packages/ml-contract: {}
+  packages/ml-contract:
+    dependencies:
+      '@expense-tracker/analytics':
+        specifier: workspace:*
+        version: link:../analytics
+      '@expense-tracker/domain':
+        specifier: workspace:*
+        version: link:../domain
+      '@expense-tracker/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
 
   packages/schemas:
     dependencies:
