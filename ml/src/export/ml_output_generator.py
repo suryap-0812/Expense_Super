@@ -145,13 +145,19 @@ def generate_structured_ml_output(
         abs_ch = top_g["absolute_change"]
         if (pct is None or pct >= 15.0) and abs_ch >= 1000.0:
             pct_str = f"+{pct}%" if pct is not None else "new spend"
+            growth_severity = "low"
+            if (pct is not None and pct >= 80.0 and abs_ch >= 4000.0) or abs_ch >= 10000.0:
+                growth_severity = "high"
+            elif (pct is not None and pct >= 35.0) or abs_ch >= 2500.0:
+                growth_severity = "medium"
+
             insights.append({
                 "type": "category_increase",
                 "category": top_g["category"],
                 "value": pct,
                 "amount": abs_ch,
                 "unit": "INR",
-                "severity": "high" if pct and pct >= 50.0 else "medium",
+                "severity": growth_severity,
                 "score": min(1.0, pct / 100.0) if pct else 0.8,
                 "title": f"Significant Spending Surge in {top_g['category']}",
                 "explanation": f"Expenditure in {top_g['category']} increased by ₹{abs_ch:,.2f} ({pct_str}) compared to previous period.",
@@ -195,12 +201,13 @@ def generate_structured_ml_output(
         slope = savings_trend["slope"]
         growth = savings_trend["percentage_growth"]
         if s_dir == "decreasing" and slope <= -1000.0:
+            savings_severity = "high" if slope <= -3500.0 else "medium"
             insights.append({
                 "type": "savings_decline",
                 "value": growth,
                 "amount": abs(slope),
                 "unit": "INR/month",
-                "severity": "high",
+                "severity": savings_severity,
                 "score": min(1.0, abs(slope) / 10000.0),
                 "title": "Downtrend in Net Monthly Savings",
                 "explanation": f"Net monthly savings is decreasing at an average rate of ₹{abs(slope):,.2f} per month.",
@@ -233,11 +240,12 @@ def generate_structured_ml_output(
     w_ratio = weekend_behavior["weekend_spending_ratio"]
     if w_ratio >= 0.45 and weekend_behavior["total_expense"] >= 2000.0:
         w_pct = round(w_ratio * 100)
+        weekend_severity = "high" if w_ratio >= 0.70 else ("medium" if w_ratio >= 0.52 else "low")
         insights.append({
             "type": "weekend_concentration",
             "value": w_pct,
             "unit": "percent",
-            "severity": "medium" if w_ratio >= 0.55 else "low",
+            "severity": weekend_severity,
             "score": w_ratio,
             "title": "High Weekend Spending Concentration",
             "explanation": f"{w_pct}% of total expenditures occur on weekends.",
@@ -273,12 +281,13 @@ def generate_structured_ml_output(
     burst_days = transaction_frequency.get("burst_days", [])
     if burst_days:
         top_burst = burst_days[0]
+        burst_sev = "high" if top_burst["transaction_count"] >= 8 else ("medium" if top_burst["transaction_count"] >= 5 else "low")
         insights.append({
             "type": "transaction_burst",
             "amount": top_burst["total_amount"],
             "value": top_burst["transaction_count"],
             "unit": "count",
-            "severity": "medium" if top_burst["transaction_count"] >= 6 else "low",
+            "severity": burst_sev,
             "score": min(1.0, top_burst["transaction_count"] / 10.0),
             "title": "High-Frequency Transaction Flurry Detected",
             "explanation": f"Recorded a flurry of {top_burst['transaction_count']} transactions totaling ₹{top_burst['total_amount']:,.2f} on {top_burst['date']}.",

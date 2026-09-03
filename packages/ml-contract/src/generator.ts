@@ -116,14 +116,28 @@ export function generateStructuredMLOutput(
   ) {
     const pctStr =
       topGrowing.percentageChange !== null ? `+${topGrowing.percentageChange}%` : "new spend";
+    let growthSeverity: InsightSeverity = "low";
+    if (
+      (topGrowing.percentageChange !== null &&
+        topGrowing.percentageChange >= 80 &&
+        topGrowing.absoluteChange >= 4000) ||
+      topGrowing.absoluteChange >= 10000
+    ) {
+      growthSeverity = "high";
+    } else if (
+      (topGrowing.percentageChange !== null && topGrowing.percentageChange >= 35) ||
+      topGrowing.absoluteChange >= 2500
+    ) {
+      growthSeverity = "medium";
+    }
+
     insights.push({
       type: "category_increase",
       category: topGrowing.category,
       value: topGrowing.percentageChange ?? undefined,
       amount: topGrowing.absoluteChange,
       unit: "INR",
-      severity:
-        topGrowing.percentageChange && topGrowing.percentageChange >= 50 ? "high" : "medium",
+      severity: growthSeverity,
       score: topGrowing.percentageChange ? Math.min(1, topGrowing.percentageChange / 100) : 0.8,
       title: `Significant Spending Surge in ${topGrowing.category}`,
       explanation: `Expenditure in ${topGrowing.category} increased by ₹${topGrowing.absoluteChange.toLocaleString("en-IN")} (${pctStr}) compared to previous period.`,
@@ -167,12 +181,14 @@ export function generateStructuredMLOutput(
   // C. Savings Trend Insight
   if (patterns.savingsTrend) {
     if (patterns.savingsTrend.direction === "decreasing" && patterns.savingsTrend.slope <= -1000) {
+      const savingsSeverity: InsightSeverity =
+        patterns.savingsTrend.slope <= -3500 ? "high" : "medium";
       insights.push({
         type: "savings_decline",
         value: patterns.savingsTrend.percentageGrowth ?? undefined,
         amount: Math.abs(patterns.savingsTrend.slope),
         unit: "INR/month",
-        severity: "high",
+        severity: savingsSeverity,
         score: Math.min(1, Math.abs(patterns.savingsTrend.slope) / 10000),
         title: "Downtrend in Net Monthly Savings",
         explanation: `Net monthly savings is decreasing at an average rate of ₹${Math.abs(patterns.savingsTrend.slope).toLocaleString("en-IN")} per month (R²=${patterns.savingsTrend.rSquared.toFixed(2)}).`,
@@ -212,11 +228,17 @@ export function generateStructuredMLOutput(
     patterns.weekendBehavior.totalExpense >= 2000
   ) {
     const weekendPct = Math.round(patterns.weekendBehavior.weekendSpendingRatio * 100);
+    const weekendSeverity: InsightSeverity =
+      patterns.weekendBehavior.weekendSpendingRatio >= 0.7
+        ? "high"
+        : patterns.weekendBehavior.weekendSpendingRatio >= 0.52
+          ? "medium"
+          : "low";
     insights.push({
       type: "weekend_concentration",
       value: weekendPct,
       unit: "percent",
-      severity: patterns.weekendBehavior.weekendSpendingRatio >= 0.55 ? "medium" : "low",
+      severity: weekendSeverity,
       score: patterns.weekendBehavior.weekendSpendingRatio,
       title: "High Weekend Spending Concentration",
       explanation: `${weekendPct}% of total expenditures occur on weekends, with average weekend transaction size of ₹${patterns.weekendBehavior.averageWeekendTransaction.toLocaleString("en-IN")} (${patterns.weekendBehavior.weekendSpendingPremium}x weekday average).`,
@@ -257,12 +279,14 @@ export function generateStructuredMLOutput(
   if (patterns.transactionFrequency.burstDays.length > 0) {
     const topBurst = patterns.transactionFrequency.burstDays[0];
     if (topBurst) {
+      const burstSeverity: InsightSeverity =
+        topBurst.transactionCount >= 8 ? "high" : topBurst.transactionCount >= 5 ? "medium" : "low";
       insights.push({
         type: "transaction_burst",
         amount: topBurst.totalAmount,
         value: topBurst.transactionCount,
         unit: "count",
-        severity: topBurst.transactionCount >= 6 ? "medium" : "low",
+        severity: burstSeverity,
         score: Math.min(1, topBurst.transactionCount / 10),
         title: "High-Frequency Transaction Flurry Detected",
         explanation: `Recorded a flurry of ${topBurst.transactionCount} transactions totaling ₹${topBurst.totalAmount.toLocaleString("en-IN")} on ${topBurst.date}.`,

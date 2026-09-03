@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-09-03T07:41:12.512980+00:00",
+  "validation_phase": "Phase 11: ML Validation",
+  "model_type": "Isolation Forest (100 estimators, 5% contamination)",
+  "benchmark_dataset": {
+    "dataset_size": 480,
+    "normal_samples": 240,
+    "anomalous_samples": 240,
+    "confusion_matrix": {
+      "true_negatives": 239,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "true_positives": 240
+    },
+    "metrics": {
+      "precision": 0.9959,
+      "recall": 1.0,
+      "false_positive_rate": 0.0042,
+      "false_negative_rate": 0.0,
+      "specificity": 0.9958,
+      "f1_score": 0.9979,
+      "roc_auc": 1.0
+    },
+    "scenario_breakdown": {
+      "NONE": {
+        "sample_size": 240,
+        "detected_count": 1,
+        "detection_rate": 0.0042,
+        "mean_anomaly_score": 0.3373
+      },
+      "spending_anomaly": {
+        "sample_size": 48,
+        "detected_count": 48,
+        "detection_rate": 1.0,
+        "mean_anomaly_score": 1.0
+      },
+      "category_increase": {
+        "sample_size": 48,
+        "detected_count": 48,
+        "detection_rate": 1.0,
+        "mean_anomaly_score": 1.0
+      },
+      "savings_decline": {
+        "sample_size": 48,
+        "detected_count": 48,
+        "detection_rate": 1.0,
+        "mean_anomaly_score": 1.0
+      },
+      "weekend_spike": {
+        "sample_size": 48,
+        "detected_count": 48,
+        "detection_rate": 1.0,
+        "mean_anomaly_score": 1.0
+      },
+      "frequency_burst": {
+        "sample_size": 48,
+        "detected_count": 48,
+        "detection_rate": 1.0,
+        "mean_anomaly_score": 1.0
+      }
+    }
+  },
+  "noise_robustness": {
+    "noise_sigma_5pct": {
+      "noise_std_dev": 0.05,
+      "label_stability_rate": 0.9904,
+      "status": "robust"
+    },
+    "noise_sigma_10pct": {
+      "noise_std_dev": 0.1,
+      "label_stability_rate": 0.9254,
+      "status": "robust"
+    },
+    "noise_sigma_20pct": {
+      "noise_std_dev": 0.2,
+      "label_stability_rate": 0.7204,
+      "status": "sensitive"
+    }
+  },
+  "documented_limitations": [
+    {
+      "boundary": "Cold-Start Data Sparsity (< 10 transactions)",
+      "behavior": "Model inference is suppressed and data_quality.sufficient_data is flagged False. Prevents spurious false positives on new accounts.",
+      "mitigation": "Fallback to deterministic analytics until minimum 10 transactions accumulated."
+    },
+    {
+      "boundary": "Single Pay-Cycle Volatility",
+      "behavior": "Users with only 1 month of history cannot compute month-over-month trends (OLS trend returns None).",
+      "mitigation": "Requires >= 2 distinct months for linear trend regression."
+    },
+    {
+      "boundary": "Symmetric Inflows / Sudden Bonusing",
+      "behavior": "A massive legitimate one-off bonus (e.g. \u20b9500,000) creates income volatility and high largest_transaction_ratio, which can score as an anomaly.",
+      "mitigation": "Structured output explains contributing feature is income-driven rather than an alarming spending deficit."
+    },
+    {
+      "boundary": "Gradual Creeping Lifestyle Inflation",
+      "behavior": "Unsupervised Isolation Forest detects point/subspace outliers rather than slow secular 2% monthly lifestyle inflation across 12 months.",
+      "mitigation": "Detected by Phase 8 deterministic OLS trend analyzer (spending_trend slope > 0)."
+    }
+  ],
+  "validation_passed": true
+}
