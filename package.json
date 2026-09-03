@@ -18,6 +18,7 @@
     "ml:validate": "PYTHONPATH=. .venv/bin/python -m ml.src.validation.dataset_validator",
     "ml:features": "PYTHONPATH=. .venv/bin/python -m ml.src.features.pipeline",
     "ml:train:anomaly": "PYTHONPATH=. .venv/bin/python -m ml.src.models.train_anomaly",
+    "ml:train:clustering": "PYTHONPATH=. .venv/bin/python -m ml.src.models.clustering",
     "validate": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run ml:test"
   },
   "devDependencies": {

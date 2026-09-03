@@ -51,6 +51,7 @@ ml/data/features/*.csv
 !ml/data/features/feature_metadata.json
 !ml/models/.gitkeep
 !ml/models/anomaly_model_metadata.json
+!ml/models/clustering_experiment_report.json
 
 # IDEs & OS
 .DS_Store

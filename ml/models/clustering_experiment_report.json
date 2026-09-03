@@ -1,0 +1,230 @@
+{
+  "model_type": "KMeans",
+  "schema_version": "1.0",
+  "evaluated_at": "2026-09-03T04:59:19.525921+00:00",
+  "n_samples": 10000,
+  "features_evaluated": [
+    "savings_rate",
+    "expense_volatility",
+    "transaction_frequency",
+    "food_ratio",
+    "shopping_ratio",
+    "weekend_spending_ratio",
+    "average_monthly_income",
+    "average_monthly_expense"
+  ],
+  "optimal_k": 6,
+  "best_silhouette_score": 0.2982,
+  "results_by_k": {
+    "2": {
+      "k": 2,
+      "inertia": 55561.58,
+      "silhouette_score": 0.2791,
+      "davies_bouldin_index": 1.4188,
+      "calinski_harabasz_index": 4397.56,
+      "cluster_stability_ari": 0.9996,
+      "profile_separation_ari": 0.1656,
+      "profile_separation_nmi": 0.3748
+    },
+    "3": {
+      "k": 3,
+      "inertia": 46553.17,
+      "silhouette_score": 0.2414,
+      "davies_bouldin_index": 1.6084,
+      "calinski_harabasz_index": 3591.25,
+      "cluster_stability_ari": 0.9978,
+      "profile_separation_ari": 0.2785,
+      "profile_separation_nmi": 0.4936
+    },
+    "4": {
+      "k": 4,
+      "inertia": 39286.64,
+      "silhouette_score": 0.2789,
+      "davies_bouldin_index": 1.3612,
+      "calinski_harabasz_index": 3453.01,
+      "cluster_stability_ari": 0.9997,
+      "profile_separation_ari": 0.3835,
+      "profile_separation_nmi": 0.5901
+    },
+    "5": {
+      "k": 5,
+      "inertia": 34212.57,
+      "silhouette_score": 0.2865,
+      "davies_bouldin_index": 1.2955,
+      "calinski_harabasz_index": 3344.13,
+      "cluster_stability_ari": 1.0,
+      "profile_separation_ari": 0.4451,
+      "profile_separation_nmi": 0.6532
+    },
+    "6": {
+      "k": 6,
+      "inertia": 30412.97,
+      "silhouette_score": 0.2982,
+      "davies_bouldin_index": 1.2657,
+      "calinski_harabasz_index": 3258.96,
+      "cluster_stability_ari": 0.9984,
+      "profile_separation_ari": 0.5312,
+      "profile_separation_nmi": 0.7078
+    },
+    "7": {
+      "k": 7,
+      "inertia": 27588.44,
+      "silhouette_score": 0.2773,
+      "davies_bouldin_index": 1.2646,
+      "calinski_harabasz_index": 3164.06,
+      "cluster_stability_ari": 1.0,
+      "profile_separation_ari": 0.6229,
+      "profile_separation_nmi": 0.7425
+    },
+    "8": {
+      "k": 8,
+      "inertia": 25519.27,
+      "silhouette_score": 0.2726,
+      "davies_bouldin_index": 1.2883,
+      "calinski_harabasz_index": 3047.4,
+      "cluster_stability_ari": 0.8931,
+      "profile_separation_ari": 0.6441,
+      "profile_separation_nmi": 0.7411
+    },
+    "9": {
+      "k": 9,
+      "inertia": 23668.41,
+      "silhouette_score": 0.2746,
+      "davies_bouldin_index": 1.299,
+      "calinski_harabasz_index": 2972.37,
+      "cluster_stability_ari": 0.9877,
+      "profile_separation_ari": 0.6488,
+      "profile_separation_nmi": 0.7402
+    },
+    "10": {
+      "k": 10,
+      "inertia": 22184.73,
+      "silhouette_score": 0.2783,
+      "davies_bouldin_index": 1.288,
+      "calinski_harabasz_index": 2892.76,
+      "cluster_stability_ari": 0.9922,
+      "profile_separation_ari": 0.7173,
+      "profile_separation_nmi": 0.7718
+    }
+  },
+  "personas_interpreted": [
+    {
+      "cluster_id": 0,
+      "archetype": "Balanced Everyday Consumer",
+      "user_count": 2027,
+      "population_share_pct": 20.27,
+      "dominant_synthetic_profile": "Shopping Heavy",
+      "description": "Moderate savings (6.8%) and stable day-to-day spending patterns.",
+      "centroid_means": {
+        "savings_rate": 6.83,
+        "expense_volatility": 0.19,
+        "transaction_frequency": 35.38,
+        "food_ratio": 0.18,
+        "shopping_ratio": 0.28,
+        "weekend_spending_ratio": 0.41,
+        "average_monthly_income": 52352.25,
+        "average_monthly_expense": 48621.56
+      }
+    },
+    {
+      "cluster_id": 1,
+      "archetype": "Food & Dining Heavy",
+      "user_count": 1173,
+      "population_share_pct": 11.73,
+      "dominant_synthetic_profile": "Food Heavy",
+      "description": "Allocates 38.0% of expenditures to groceries and food services.",
+      "centroid_means": {
+        "savings_rate": 18.32,
+        "expense_volatility": 0.14,
+        "transaction_frequency": 37.15,
+        "food_ratio": 0.38,
+        "shopping_ratio": 0.08,
+        "weekend_spending_ratio": 0.36,
+        "average_monthly_income": 49666.0,
+        "average_monthly_expense": 40551.44
+      }
+    },
+    {
+      "cluster_id": 2,
+      "archetype": "Disciplined High Saver",
+      "user_count": 2971,
+      "population_share_pct": 29.71,
+      "dominant_synthetic_profile": "Goal-Oriented Saver",
+      "description": "Consistently saves 35.6% of income with tightly controlled discretionary spending.",
+      "centroid_means": {
+        "savings_rate": 35.61,
+        "expense_volatility": 0.14,
+        "transaction_frequency": 25.39,
+        "food_ratio": 0.24,
+        "shopping_ratio": 0.11,
+        "weekend_spending_ratio": 0.28,
+        "average_monthly_income": 58847.14,
+        "average_monthly_expense": 37690.09
+      }
+    },
+    {
+      "cluster_id": 3,
+      "archetype": "Discretionary Overspender",
+      "user_count": 1114,
+      "population_share_pct": 11.14,
+      "dominant_synthetic_profile": "Overspender",
+      "description": "Negative or low savings (-27.0%) driven by heavy shopping (24.0%) and lifestyle purchases.",
+      "centroid_means": {
+        "savings_rate": -27.02,
+        "expense_volatility": 0.14,
+        "transaction_frequency": 41.85,
+        "food_ratio": 0.19,
+        "shopping_ratio": 0.24,
+        "weekend_spending_ratio": 0.45,
+        "average_monthly_income": 45702.25,
+        "average_monthly_expense": 58021.83
+      }
+    },
+    {
+      "cluster_id": 4,
+      "archetype": "Weekend Lifestyle Spender",
+      "user_count": 1100,
+      "population_share_pct": 11.0,
+      "dominant_synthetic_profile": "Weekend Spender",
+      "description": "Concentrates 56.0% of monthly expenditure on weekend dining and social outings.",
+      "centroid_means": {
+        "savings_rate": 16.66,
+        "expense_volatility": 0.15,
+        "transaction_frequency": 32.11,
+        "food_ratio": 0.25,
+        "shopping_ratio": 0.17,
+        "weekend_spending_ratio": 0.56,
+        "average_monthly_income": 51584.93,
+        "average_monthly_expense": 42922.41
+      }
+    },
+    {
+      "cluster_id": 5,
+      "archetype": "Irregular Volatile Budgeter",
+      "user_count": 1615,
+      "population_share_pct": 16.15,
+      "dominant_synthetic_profile": "Variable Income",
+      "description": "High spending volatility (0.44) with erratic monthly cash flow spikes.",
+      "centroid_means": {
+        "savings_rate": 19.3,
+        "expense_volatility": 0.44,
+        "transaction_frequency": 29.59,
+        "food_ratio": 0.25,
+        "shopping_ratio": 0.15,
+        "weekend_spending_ratio": 0.33,
+        "average_monthly_income": 53543.8,
+        "average_monthly_expense": 43096.36
+      }
+    }
+  ],
+  "production_recommendation": {
+    "verdict": "Supplementary Persona Clustering",
+    "status": "APPROVED_FOR_SUPPLEMENTARY_INSIGHTS",
+    "optimal_k": 6,
+    "rationale": "K-Means (K=6) achieves stable cluster separation (Stability ARI=1.00, Silhouette=0.2982). Centroids map cleanly to intuitive financial archetypes. Recommended as a secondary peer-benchmarking and persona insight engine, while keeping primary deterministic calculations authoritative."
+  },
+  "artifacts": {
+    "joblib_path": "ml/models/kmeans_clusterer.joblib",
+    "onnx_path": "ml/models/kmeans_clusterer.onnx"
+  }
+}
