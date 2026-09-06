@@ -26,6 +26,8 @@
     "web:build": "pnpm --filter @expense-tracker/web run build",
     "desktop:dev": "pnpm --filter @expense-tracker/desktop run dev",
     "desktop:build": "pnpm --filter @expense-tracker/desktop run build",
+    "mobile:start": "pnpm --filter @expense-tracker/mobile run start",
+    "mobile:typecheck": "pnpm --filter @expense-tracker/mobile run typecheck",
     "validate": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run ml:test"
   },
   "devDependencies": {
