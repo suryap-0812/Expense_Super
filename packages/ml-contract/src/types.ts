@@ -1,10 +1,11 @@
 /**
  * Structured ML Contract Types
  * Defines versioned data structures for ML inference inputs, data quality checks,
- * evidence-backed structured insights, behavioral personas, and final output payloads.
- * (Section 29 and Section 69 of the Master Technical Specification)
+ * evidence-backed structured insights, behavioral personas, final output payloads,
+ * and the application-facing FinancialAnalysisEngine contract (Section 29, 32, 69 & 73).
  */
 
+import type { Transaction } from "@expense-tracker/domain";
 import type { InsightSeverity } from "@expense-tracker/schemas";
 
 export interface MLDataQualityMetrics {
@@ -101,4 +102,53 @@ export interface StructuredMLOutputPayload {
       sample_size?: number;
     };
   }>;
+}
+
+/**
+ * Application-Facing Analysis Engine Contract (Section 73)
+ */
+export interface FinancialAnalysisInput {
+  transactions: ReadonlyArray<Transaction>;
+  period?: string;
+  savingsGoalAmount?: number;
+  monthlyIncomes?: Record<string, number>;
+  options?: {
+    disableML?: boolean;
+    anomalyThreshold?: number;
+  };
+}
+
+export interface FinancialAnalysisResult {
+  schemaVersion: string;
+  period: string;
+  generatedAt: string;
+  dataQuality: MLDataQualityMetrics & {
+    coldStart: boolean;
+    message?: string;
+  };
+  summary: MLDeterministicSummary;
+  persona?: MLBehavioralPersona;
+  anomaly?: {
+    isAnomalous: boolean;
+    anomalyScore: number;
+    severity: InsightSeverity;
+    topFeature?: string;
+  };
+  insights: StructuredMLInsight[];
+  structuredPayload: StructuredMLOutputPayload;
+  executionMetadata: {
+    engineType: "onnx" | "rule_based" | "hybrid";
+    durationMs: number;
+  };
+}
+
+export interface ONNXInferenceSessionProvider {
+  runAnomalyInference(featureVector: Float32Array): Promise<{ label: number; score: number }>;
+  runClusteringInference(
+    featureVector: Float32Array,
+  ): Promise<{ label: number; distances: Float32Array }>;
+}
+
+export interface FinancialAnalysisEngine {
+  analyze(input: FinancialAnalysisInput): Promise<FinancialAnalysisResult>;
 }
