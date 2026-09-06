@@ -3,7 +3,7 @@
   "model_type": "IsolationForest",
   "version": "1.0.0",
   "schema_version": "1.0",
-  "exported_at": "2026-09-06T05:48:15.287777+00:00",
+  "exported_at": "2026-09-06T05:55:16.194845+00:00",
   "target_opset": 15,
   "file_size_bytes": 787787,
   "artifacts": {

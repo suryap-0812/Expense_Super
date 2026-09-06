@@ -1,44 +1,54 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import type { FinancialAnalysisResult } from "@expense-tracker/ml-contract";
+import { useBalanceStore, useGoalStore } from "@expense-tracker/state";
 
 interface SummaryCardsProps {
   analysis: FinancialAnalysisResult | null;
 }
 
 export const SummaryCards: React.FC<SummaryCardsProps> = ({ analysis }) => {
+  const { currentBalance } = useBalanceStore();
+  const { allocations } = useGoalStore();
+
+  const totalGoalAllocations = Object.values(allocations).reduce((sum, val) => sum + val, 0);
+  const unallocatedCash = Math.max(0, (currentBalance || 450000) - totalGoalAllocations);
+  const displayBalance = currentBalance > 0 ? currentBalance : 450000;
+
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 30850;
   const savingsRate = analysis?.summary.savingsRate ?? 58.8;
-  const netSavings = analysis?.summary.netSavings ?? 44150;
 
   return (
     <View style={styles.grid}>
       <View style={styles.card}>
-        <Text style={styles.label}>Income</Text>
+        <Text style={styles.label}>Bank Balance (Manual)</Text>
+        <Text style={[styles.value, { color: "#f8fafc" }]}>
+          ₹{displayBalance.toLocaleString("en-IN")}
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Unallocated Cash</Text>
+        <Text style={[styles.value, { color: "#34d399" }]}>
+          ₹{unallocatedCash.toLocaleString("en-IN")}
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Monthly Income</Text>
         <Text style={[styles.value, { color: "#10b981" }]}>
           ₹{totalIncome.toLocaleString("en-IN")}
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.label}>Expenses</Text>
+        <Text style={styles.label}>Expenses / Savings</Text>
         <Text style={[styles.value, { color: "#f43f5e" }]}>
-          ₹{totalExpense.toLocaleString("en-IN")}
-        </Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Net Savings</Text>
-        <Text style={[styles.value, { color: netSavings >= 0 ? "#10b981" : "#f43f5e" }]}>
-          ₹{netSavings.toLocaleString("en-IN")}
-        </Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Savings Rate</Text>
-        <Text style={[styles.value, { color: "#818cf8" }]}>
-          {savingsRate !== null ? `${savingsRate.toFixed(1)}%` : "N/A"}
+          ₹{totalExpense.toLocaleString("en-IN")}{" "}
+          <Text style={{ fontSize: 12, color: "#818cf8" }}>
+            ({savingsRate !== null ? `${savingsRate.toFixed(0)}%` : ""})
+          </Text>
         </Text>
       </View>
     </View>

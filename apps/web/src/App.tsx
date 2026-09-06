@@ -8,22 +8,33 @@ import { TransactionsSection } from "./components/dashboard/TransactionsSection"
 import { AIAdvisorSection } from "./components/dashboard/AIAdvisorSection";
 import { AddTransactionModal } from "./components/modals/AddTransactionModal";
 import { EditTransactionModal } from "./components/modals/EditTransactionModal";
-import { useTransactionStore, useAnalysisStore, useGoalStore } from "@expense-tracker/state";
+import { UpdateBalanceModal } from "./components/modals/UpdateBalanceModal";
+import { BalanceHistoryModal } from "./components/modals/BalanceHistoryModal";
+import {
+  useTransactionStore,
+  useAnalysisStore,
+  useGoalStore,
+  useBalanceStore,
+} from "@expense-tracker/state";
 import { createFinancialAnalysisEngine } from "@expense-tracker/ml-contract";
 import type { Transaction } from "@expense-tracker/domain";
 import {
   initialSampleTransactions,
   initialSampleGoals,
   initialSampleAllocations,
+  initialSampleBalanceRecords,
 } from "./data/sample-data";
 
 export const App: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [isUpdateBalanceOpen, setIsUpdateBalanceOpen] = useState(false);
+  const [isBalanceHistoryOpen, setIsBalanceHistoryOpen] = useState(false);
 
   const { transactions, setTransactions, filters } = useTransactionStore();
   const { analysisResult, runAnalysis } = useAnalysisStore();
   const { setGoals } = useGoalStore();
+  const { balanceHistory, setBalanceHistory } = useBalanceStore();
 
   const engine = useMemo(() => createFinancialAnalysisEngine(), []);
 
@@ -33,7 +44,10 @@ export const App: React.FC = () => {
       setTransactions(initialSampleTransactions);
       setGoals(initialSampleGoals, initialSampleAllocations);
     }
-  }, [setTransactions, setGoals, transactions.length]);
+    if (balanceHistory.length === 0) {
+      setBalanceHistory(initialSampleBalanceRecords);
+    }
+  }, [setTransactions, setGoals, setBalanceHistory, transactions.length, balanceHistory.length]);
 
   // Reactive ML Analysis computation whenever transactions or period change
   const triggerAnalysis = React.useCallback(() => {
@@ -55,7 +69,11 @@ export const App: React.FC = () => {
       <Header onOpenAddModal={() => setIsAddModalOpen(true)} onRefreshAnalysis={triggerAnalysis} />
 
       {/* Primary 4-Metric Summary Cards */}
-      <SummaryCards analysis={analysisResult} />
+      <SummaryCards
+        analysis={analysisResult}
+        onOpenUpdateBalance={() => setIsUpdateBalanceOpen(true)}
+        onOpenBalanceHistory={() => setIsBalanceHistoryOpen(true)}
+      />
 
       {/* Main Grid: Analytical & Behavioral Sections */}
       <div className="dashboard-grid">
@@ -93,6 +111,18 @@ export const App: React.FC = () => {
         onClose={() => setEditingTransaction(null)}
         transaction={editingTransaction}
         onTransactionUpdated={triggerAnalysis}
+      />
+
+      {/* Update Bank Balance Modal */}
+      <UpdateBalanceModal
+        isOpen={isUpdateBalanceOpen}
+        onClose={() => setIsUpdateBalanceOpen(false)}
+      />
+
+      {/* Balance History Modal */}
+      <BalanceHistoryModal
+        isOpen={isBalanceHistoryOpen}
+        onClose={() => setIsBalanceHistoryOpen(false)}
       />
     </div>
   );

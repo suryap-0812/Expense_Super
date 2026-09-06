@@ -1,19 +1,21 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import type { Transaction, Goal, Category } from "@expense-tracker/domain";
+import type { Transaction, Goal, Category, BalanceRecord } from "@expense-tracker/domain";
 import {
   useTransactionStore,
   useCategoryStore,
+  useBalanceStore,
   useAnalysisStore,
   useGoalStore,
   useSettingsStore,
   selectFilteredTransactions,
 } from "../src";
 
-describe("Phase 19: Transaction & Category State Management", () => {
+describe("Phase 19 & 20: Transaction, Category & Bank Balance State Management", () => {
   beforeEach(() => {
     useTransactionStore.getState().clearTransactions();
     useTransactionStore.getState().resetFilters();
     useCategoryStore.getState().resetToDefault();
+    useBalanceStore.getState().clearBalanceHistory();
     useAnalysisStore.getState().clearAnalysis();
     useGoalStore.setState({ goals: [], allocations: {} });
   });
@@ -227,6 +229,54 @@ describe("Phase 19: Transaction & Category State Management", () => {
     expect(
       useCategoryStore.getState().categories.find((c) => c.id === "cat_custom_crypto"),
     ).toBeUndefined();
+  });
+
+  it("manages manual bank balance and history in BalanceStore", () => {
+    const bStore = useBalanceStore.getState();
+    expect(bStore.currentBalance).toBe(0);
+    expect(bStore.balanceHistory.length).toBe(0);
+
+    const b1: BalanceRecord = {
+      id: "bal_1",
+      balance: 100000,
+      recordedAt: "2026-04-01",
+      note: "April beginning balance",
+      createdAt: "2026-04-01T00:00:00Z",
+    };
+
+    const b2: BalanceRecord = {
+      id: "bal_2",
+      balance: 150000,
+      recordedAt: "2026-05-01",
+      note: "May post-salary balance",
+      createdAt: "2026-05-01T00:00:00Z",
+    };
+
+    // Setting history sorts descending by recordedAt
+    useBalanceStore.getState().setBalanceHistory([b1, b2]);
+    expect(useBalanceStore.getState().currentBalance).toBe(150000);
+    expect(useBalanceStore.getState().getLatestBalanceRecord()?.id).toBe("bal_2");
+
+    // Add new balance record
+    const b3: BalanceRecord = {
+      id: "bal_3",
+      balance: 180000,
+      recordedAt: "2026-05-15",
+      note: "Mid-month balance check",
+      createdAt: "2026-05-15T00:00:00Z",
+    };
+    useBalanceStore.getState().addBalanceRecord(b3);
+    expect(useBalanceStore.getState().currentBalance).toBe(180000);
+    expect(useBalanceStore.getState().balanceHistory.length).toBe(3);
+
+    // Calculate unallocated cash with goal allocations
+    const unallocated = useBalanceStore.getState().getUnallocatedCash(50000);
+    expect(unallocated).toBe(130000);
+
+    // Delete latest record recomputes current balance to previous record
+    useBalanceStore.getState().deleteBalanceRecord("bal_3");
+    expect(useBalanceStore.getState().currentBalance).toBe(150000);
+    expect(useBalanceStore.getState().balanceHistory.length).toBe(2);
   });
 
   it("manages goals and allocations in GoalStore", () => {

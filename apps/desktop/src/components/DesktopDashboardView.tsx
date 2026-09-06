@@ -1,15 +1,15 @@
 import React from "react";
 import type { FinancialAnalysisResult } from "@expense-tracker/ml-contract";
-import { useTransactionStore, useGoalStore } from "@expense-tracker/state";
+import { useTransactionStore, useGoalStore, useBalanceStore } from "@expense-tracker/state";
 import type { Transaction, Goal } from "@expense-tracker/domain";
 import {
   DollarSign,
   TrendingUp,
-  AlertTriangle,
-  Target,
   Sparkles,
   PieChart as PieIcon,
   Tag,
+  Wallet,
+  Coins,
 } from "lucide-react";
 
 interface DesktopDashboardViewProps {
@@ -19,11 +19,15 @@ interface DesktopDashboardViewProps {
 export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ analysis }) => {
   const { transactions } = useTransactionStore();
   const { goals, allocations } = useGoalStore();
+  const { currentBalance } = useBalanceStore();
+
+  const totalGoalAllocations = Object.values(allocations).reduce((sum, val) => sum + val, 0);
+  const displayBalance = currentBalance > 0 ? currentBalance : 450000;
+  const unallocatedCash = Math.max(0, displayBalance - totalGoalAllocations);
 
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 41800;
   const savingsRate = analysis?.summary.savingsRate ?? 44.3;
-  const isAnomalous = analysis?.anomaly?.isAnomalous ?? false;
   const archetype = analysis?.persona?.archetype ?? "Balanced Optimizer";
   const archetypeDesc =
     analysis?.persona?.description ??
@@ -44,6 +48,62 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
             style={{
               padding: "0.75rem",
               borderRadius: "0.75rem",
+              background: "rgba(99, 102, 241, 0.15)",
+              color: "#818cf8",
+            }}
+          >
+            <Wallet style={{ width: "1.5rem", height: "1.5rem" }} />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                color: "var(--text-secondary)",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Bank Balance (Manual)
+            </div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+              ₹{displayBalance.toLocaleString("en-IN")}
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
+              background: "rgba(52, 211, 153, 0.15)",
+              color: "#34d399",
+            }}
+          >
+            <Coins style={{ width: "1.5rem", height: "1.5rem" }} />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                color: "var(--text-secondary)",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Unallocated Cash
+            </div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+              ₹{unallocatedCash.toLocaleString("en-IN")}
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
               background: "rgba(16, 185, 129, 0.15)",
               color: "#10b981",
             }}
@@ -59,7 +119,7 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                 letterSpacing: "0.05em",
               }}
             >
-              Total Income
+              Monthly Income
             </div>
             <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
               ₹{totalIncome.toLocaleString("en-IN")}
@@ -87,66 +147,13 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                 letterSpacing: "0.05em",
               }}
             >
-              Total Expenses
+              Monthly Expenses
             </div>
             <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
-              ₹{totalExpense.toLocaleString("en-IN")}
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div
-            style={{
-              padding: "0.75rem",
-              borderRadius: "0.75rem",
-              background: "rgba(99, 102, 241, 0.15)",
-              color: "#6366f1",
-            }}
-          >
-            <Target style={{ width: "1.5rem", height: "1.5rem" }} />
-          </div>
-          <div>
-            <div
-              style={{
-                fontSize: "0.75rem",
-                color: "var(--text-secondary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              Savings Rate
-            </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
-              {savingsRate !== null ? `${savingsRate.toFixed(1)}%` : "N/A"}
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div
-            style={{
-              padding: "0.75rem",
-              borderRadius: "0.75rem",
-              background: isAnomalous ? "rgba(244, 63, 94, 0.15)" : "rgba(16, 185, 129, 0.15)",
-              color: isAnomalous ? "#f43f5e" : "#10b981",
-            }}
-          >
-            <AlertTriangle style={{ width: "1.5rem", height: "1.5rem" }} />
-          </div>
-          <div>
-            <div
-              style={{
-                fontSize: "0.75rem",
-                color: "var(--text-secondary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              Anomaly State
-            </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
-              {isAnomalous ? "Flagged" : "Nominal"}
+              ₹{totalExpense.toLocaleString("en-IN")}{" "}
+              <span style={{ fontSize: "0.875rem", color: "#818cf8" }}>
+                ({savingsRate !== null ? `${savingsRate.toFixed(0)}%` : ""} saved)
+              </span>
             </div>
           </div>
         </div>
@@ -253,8 +260,13 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                       </span>
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                      {tx.categoryId} • {tx.transactionDate}
+                      {tx.categoryId} • {tx.paymentMethod} • {tx.transactionDate}
                     </div>
+                    {tx.notes && (
+                      <div style={{ fontSize: "0.6875rem", color: "#818cf8", marginTop: 2 }}>
+                        Note: {tx.notes}
+                      </div>
+                    )}
                   </div>
                   <div
                     style={{

@@ -1,4 +1,4 @@
-import type { Transaction, Goal } from "@expense-tracker/domain";
+import type { Transaction, Goal, BalanceRecord } from "@expense-tracker/domain";
 
 export const initialSampleTransactions: Transaction[] = [
   // 2026-05
@@ -171,3 +171,20 @@ export const initialSampleAllocations: Record<string, number> = {
   goal_02: 120000,
   goal_03: 45000,
 };
+
+export const initialSampleBalanceRecords: BalanceRecord[] = [
+  {
+    id: "bal_demo_01",
+    balance: 450000,
+    recordedAt: "2026-05-01",
+    note: "Post salary account verification",
+    createdAt: "2026-05-01T08:00:00.000Z",
+  },
+  {
+    id: "bal_demo_02",
+    balance: 415000,
+    recordedAt: "2026-04-01",
+    note: "End of month account reconciliation",
+    createdAt: "2026-04-01T08:00:00.000Z",
+  },
+];

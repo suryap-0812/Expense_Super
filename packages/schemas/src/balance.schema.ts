@@ -25,10 +25,17 @@ export const CreateBalanceRecordSchema = z.object({
   note: z.string().trim().max(500).optional(),
 });
 
+export const UpdateBalanceRecordSchema = z.object({
+  balance: BalanceAmountSchema.optional(),
+  recordedAt: IsoDateStringSchema.optional(),
+  note: z.string().trim().max(500).optional(),
+});
+
 export const BalanceRecordSchema = CreateBalanceRecordSchema.extend({
   id: z.string().min(1, "Balance record ID is required"),
   createdAt: z.string().datetime({ message: "createdAt must be an ISO 8601 timestamp" }),
 });
 
 export type CreateBalanceRecordInput = z.infer<typeof CreateBalanceRecordSchema>;
+export type UpdateBalanceRecordInput = z.infer<typeof UpdateBalanceRecordSchema>;
 export type BalanceRecordDto = z.infer<typeof BalanceRecordSchema>;

@@ -65,10 +65,15 @@ export type {
 export {
   BalanceAmountSchema,
   CreateBalanceRecordSchema,
+  UpdateBalanceRecordSchema,
   BalanceRecordSchema,
 } from "./balance.schema.js";
 
-export type { CreateBalanceRecordInput, BalanceRecordDto } from "./balance.schema.js";
+export type {
+  CreateBalanceRecordInput,
+  UpdateBalanceRecordInput,
+  BalanceRecordDto,
+} from "./balance.schema.js";
 
 // ML Contract
 export {
