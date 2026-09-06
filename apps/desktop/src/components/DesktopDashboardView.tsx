@@ -1,6 +1,12 @@
 import React from "react";
 import type { FinancialAnalysisResult } from "@expense-tracker/ml-contract";
-import { useTransactionStore, useGoalStore, useBalanceStore } from "@expense-tracker/state";
+import {
+  useTransactionStore,
+  useGoalStore,
+  useBalanceStore,
+  useGuidanceStore,
+} from "@expense-tracker/state";
+import { GuidanceFindingCard, ProvenanceBadge, Button, Badge } from "@expense-tracker/ui";
 import type { Transaction, Goal } from "@expense-tracker/domain";
 import {
   DollarSign,
@@ -11,6 +17,10 @@ import {
   Wallet,
   Coins,
   PiggyBank,
+  Bot,
+  RefreshCw,
+  Clock,
+  ShieldCheck,
 } from "lucide-react";
 
 interface DesktopDashboardViewProps {
@@ -21,6 +31,8 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
   const { transactions } = useTransactionStore();
   const { goals, allocations, getTotalAllocations } = useGoalStore();
   const { currentBalance, getUnallocatedCash } = useBalanceStore();
+  const { guidanceResult, isGenerating, lastGeneratedAt, activeModel, generateGuidance } =
+    useGuidanceStore();
 
   const totalGoalAllocations = getTotalAllocations();
   const displayBalance = currentBalance > 0 ? currentBalance : 450000;
@@ -189,6 +201,143 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
       {/* Grid: ML Insights & Goals */}
       <div className="dashboard-grid">
         <div className="col-7" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {/* AI Financial Guidance Section */}
+          <div
+            className="glass-card"
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Bot style={{ width: "1.25rem", height: "1.25rem", color: "#818cf8" }} />
+                <h3
+                  style={{
+                    fontSize: "1.125rem",
+                    fontWeight: 600,
+                    color: "var(--text-primary)",
+                    margin: 0,
+                  }}
+                >
+                  AI Financial Guidance
+                </h3>
+                <Badge variant="brand" size="sm">
+                  {activeModel || "anthropic/claude-3.5-sonnet"}
+                </Badge>
+                {lastGeneratedAt && (
+                  <span
+                    style={{
+                      fontSize: "0.6875rem",
+                      color: "var(--text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <Clock size={11} />
+                    {new Date(lastGeneratedAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                )}
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => analysis && generateGuidance(analysis)}
+                disabled={isGenerating || !analysis}
+                style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}
+              >
+                <RefreshCw
+                  size={13}
+                  style={{ animation: isGenerating ? "spin 1s linear infinite" : "none" }}
+                />
+                <span>{isGenerating ? "Analyzing..." : "Refresh Guidance"}</span>
+              </Button>
+            </div>
+
+            {/* Provenance Tiers */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.4rem 0.65rem",
+                background: "rgba(0, 0, 0, 0.25)",
+                borderRadius: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)", fontWeight: 600 }}>
+                TIERS:
+              </span>
+              <ProvenanceBadge tier="calculated" size="sm" />
+              <ProvenanceBadge tier="ml_detected" size="sm" />
+              <ProvenanceBadge tier="llm_suggested" size="sm" />
+            </div>
+
+            {/* Executive Summary */}
+            {guidanceResult?.summary ? (
+              <div
+                style={{
+                  background: "rgba(99, 102, 241, 0.1)",
+                  border: "1px solid rgba(99, 102, 241, 0.25)",
+                  borderRadius: "0.5rem",
+                  padding: "0.75rem 0.9rem",
+                  fontSize: "0.8125rem",
+                  color: "#f8fafc",
+                  lineHeight: 1.5,
+                }}
+              >
+                <strong>Summary:</strong> {guidanceResult.summary}
+              </div>
+            ) : (
+              <div
+                style={{
+                  fontSize: "0.8125rem",
+                  color: "var(--text-secondary)",
+                  background: "rgba(0, 0, 0, 0.2)",
+                  padding: "0.75rem",
+                  borderRadius: "0.5rem",
+                }}
+              >
+                Click <strong>Refresh Guidance</strong> to generate 4-facet grounded natural
+                language recommendations and actionable steps.
+              </div>
+            )}
+
+            {/* Findings */}
+            {guidanceResult?.findings && guidanceResult.findings.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                {guidanceResult.findings.map((f, i) => (
+                  <GuidanceFindingCard key={i} finding={f} provenance="llm_suggested" />
+                ))}
+              </div>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                fontSize: "0.6875rem",
+                color: "var(--text-muted)",
+                borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+                paddingTop: "0.5rem",
+              }}
+            >
+              <ShieldCheck size={13} color="#10b981" />
+              <span>Grounded ML &amp; Deterministic Advisory</span>
+            </div>
+          </div>
+
           {/* ML Archetype Card */}
           <div className="glass-card">
             <div

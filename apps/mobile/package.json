@@ -15,6 +15,7 @@
     "@expense-tracker/schemas": "workspace:*",
     "@expense-tracker/analytics": "workspace:*",
     "@expense-tracker/ml-contract": "workspace:*",
+    "@expense-tracker/llm-client": "workspace:*",
     "@expense-tracker/state": "workspace:*",
     "@expense-tracker/utils": "workspace:*",
     "expo": "~51.0.0",

@@ -5,7 +5,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    include: ["tests/**/*.test.ts", "packages/**/*.test.ts", "apps/**/*.test.ts"],
+    include: [
+      "tests/**/*.test.ts",
+      "packages/**/*.test.ts",
+      "packages/**/*.test.tsx",
+      "apps/**/*.test.ts",
+      "apps/**/*.test.tsx",
+    ],
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
@@ -19,6 +25,7 @@ export default defineConfig({
       "@expense-tracker/state": path.resolve(__dirname, "./packages/state/src"),
       "@expense-tracker/analytics": path.resolve(__dirname, "./packages/analytics/src"),
       "@expense-tracker/ml-contract": path.resolve(__dirname, "./packages/ml-contract/src"),
+      "@expense-tracker/llm-client": path.resolve(__dirname, "./packages/llm-client/src"),
       "@expense-tracker/ui": path.resolve(__dirname, "./packages/ui/src"),
       "@expense-tracker/utils": path.resolve(__dirname, "./packages/utils/src"),
       "@expense-tracker/db": path.resolve(__dirname, "./packages/db/src"),

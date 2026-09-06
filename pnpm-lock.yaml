@@ -66,6 +66,9 @@ importers:
       '@expense-tracker/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@expense-tracker/llm-client':
+        specifier: workspace:*
+        version: link:../../packages/llm-client
       '@expense-tracker/ml-contract':
         specifier: workspace:*
         version: link:../../packages/ml-contract
@@ -121,6 +124,9 @@ importers:
       '@expense-tracker/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@expense-tracker/llm-client':
+        specifier: workspace:*
+        version: link:../../packages/llm-client
       '@expense-tracker/ml-contract':
         specifier: workspace:*
         version: link:../../packages/ml-contract
@@ -170,6 +176,9 @@ importers:
       '@expense-tracker/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@expense-tracker/llm-client':
+        specifier: workspace:*
+        version: link:../../packages/llm-client
       '@expense-tracker/ml-contract':
         specifier: workspace:*
         version: link:../../packages/ml-contract

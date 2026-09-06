@@ -14,6 +14,7 @@
     "@expense-tracker/schemas": "workspace:*",
     "@expense-tracker/analytics": "workspace:*",
     "@expense-tracker/ml-contract": "workspace:*",
+    "@expense-tracker/llm-client": "workspace:*",
     "@expense-tracker/state": "workspace:*",
     "@expense-tracker/ui": "workspace:*",
     "lucide-react": "^1.41.0",

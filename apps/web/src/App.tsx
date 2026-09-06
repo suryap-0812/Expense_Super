@@ -113,7 +113,7 @@ export const App: React.FC = () => {
             onOpenAllocation={(goal) => setAllocatingGoal(goal)}
             onOpenHistory={(goal) => setHistoryGoal(goal)}
           />
-          <AIAdvisorSection />
+          <AIAdvisorSection analysis={analysisResult} />
         </div>
 
         {/* Full-width Transactions Section */}

@@ -3,9 +3,15 @@ import { StyleSheet, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import { Header } from "./components/Header.js";
 import { SummaryCards } from "./components/SummaryCards.js";
 import { MLInsightsCard } from "./components/MLInsightsCard.js";
+import { AIGuidanceCard } from "./components/AIGuidanceCard.js";
 import { GoalsProgress } from "./components/GoalsProgress.js";
 import { TransactionsList } from "./components/TransactionsList.js";
-import { useTransactionStore, useAnalysisStore, useGoalStore } from "@expense-tracker/state";
+import {
+  useTransactionStore,
+  useAnalysisStore,
+  useGoalStore,
+  useGuidanceStore,
+} from "@expense-tracker/state";
 import { createFinancialAnalysisEngine } from "@expense-tracker/ml-contract";
 import {
   initialMobileTransactions,
@@ -18,6 +24,7 @@ export const App: React.FC = () => {
   const { transactions, setTransactions, filters } = useTransactionStore();
   const { analysisResult, runAnalysis } = useAnalysisStore();
   const { setGoals } = useGoalStore();
+  const { guidanceResult, isGenerating, generateGuidance } = useGuidanceStore();
 
   const engine = useMemo(() => createFinancialAnalysisEngine(), []);
 
@@ -48,12 +55,24 @@ export const App: React.FC = () => {
     triggerAnalysis();
   }, [triggerAnalysis]);
 
+  const handleRefreshGuidance = async () => {
+    if (analysisResult) {
+      await generateGuidance(analysisResult);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor="#060911" />
       <Header onRefresh={triggerAnalysis} isAnalyzing={isBusy} />
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <SummaryCards analysis={analysisResult} />
+        <AIGuidanceCard
+          analysis={analysisResult}
+          guidanceResult={guidanceResult}
+          isGenerating={isGenerating}
+          onRefresh={handleRefreshGuidance}
+        />
         <MLInsightsCard analysis={analysisResult} />
         <GoalsProgress />
         <TransactionsList />
