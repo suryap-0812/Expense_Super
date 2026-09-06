@@ -20,6 +20,7 @@
     "@expense-tracker/domain": "workspace:*",
     "@expense-tracker/schemas": "workspace:*",
     "@expense-tracker/ml-contract": "workspace:*",
+    "@expense-tracker/utils": "workspace:*",
     "zod": "^3.23.8"
   }
 }

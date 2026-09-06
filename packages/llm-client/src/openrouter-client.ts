@@ -4,6 +4,11 @@
  */
 
 import { parseLLMResponseSafe } from "@expense-tracker/schemas";
+import {
+  assertNoRawTransactions,
+  redactSensitiveData,
+  sanitizeErrorMessage,
+} from "@expense-tracker/utils";
 import { FINANCIAL_GUIDANCE_SYSTEM_PROMPT, buildFinancialGuidanceUserPrompt } from "./prompts";
 import type {
   LLMAnalysisInput,
@@ -16,7 +21,7 @@ export const DEFAULT_OPENROUTER_MODEL = "anthropic/claude-3.5-sonnet";
 export const DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 
 /**
- * Production OpenRouter LLM Client.
+ * Production OpenRouter LLM Client with strict privacy and security enforcement (Section 34, 35, 36 & 87).
  */
 export class OpenRouterClient implements LLMClient {
   private readonly apiKey: string;
@@ -45,6 +50,15 @@ export class OpenRouterClient implements LLMClient {
 
   public async generateExplanation(input: LLMAnalysisInput): Promise<LLMAnalysisResult> {
     const startTime = performance.now();
+
+    // Privacy Guard (Section 35 & 87): Assert that zero raw transactions are sent
+    const privacyCheck = assertNoRawTransactions(input);
+    if (!privacyCheck.isClean) {
+      throw new Error(
+        `Security assertion failed: Raw transaction records cannot be transmitted in external LLM payloads (${privacyCheck.violations.join(", ")}).`,
+      );
+    }
+
     const userPrompt = buildFinancialGuidanceUserPrompt(input);
 
     const controller = new AbortController();
@@ -87,6 +101,8 @@ export class OpenRouterClient implements LLMClient {
           // Ignore read error
         }
 
+        const sanitizedError = redactSensitiveData(errorBody || response.statusText);
+
         if (response.status === 401) {
           throw new Error(
             "OpenRouter authentication failed: Invalid API key. Please check your key in settings.",
@@ -102,9 +118,7 @@ export class OpenRouterClient implements LLMClient {
             "OpenRouter rate limit reached. Please wait a moment before trying again.",
           );
         }
-        throw new Error(
-          `OpenRouter API error (HTTP ${response.status}): ${errorBody || response.statusText}`,
-        );
+        throw new Error(`OpenRouter API error (HTTP ${response.status}): ${sanitizedError}`);
       }
 
       const jsonResponse = (await response.json()) as {
@@ -143,9 +157,9 @@ export class OpenRouterClient implements LLMClient {
         if (err.name === "AbortError") {
           throw new Error(`OpenRouter request timed out after ${this.timeoutMs}ms.`);
         }
-        throw err;
+        throw new Error(sanitizeErrorMessage(err));
       }
-      throw new Error(`Unknown error during OpenRouter execution: ${String(err)}`);
+      throw new Error(`Unknown error during OpenRouter execution: ${sanitizeErrorMessage(err)}`);
     }
   }
 }

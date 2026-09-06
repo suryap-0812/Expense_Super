@@ -1,9 +1,11 @@
 # Phase 27: AI Guidance UX
 
 ## 1. Executive Summary
+
 Phase 27 implements the **AI Guidance UX** conforming strictly to **Master Specification Section 86** and Sections 34-37. It presents natural language financial explanations, proactive budget coaching, and actionable recommendations derived from local deterministic analytics and ML inference models.
 
 A core tenet of this phase is transparency and grounding:
+
 - The UI renders all **5 mandatory fields** for every finding:
   1. **Finding Title**: Headline summary of the financial insight.
   2. **Evidence**: Grounded metric comparison displaying observed values, baseline values, and delta percentages in monospace font.
@@ -21,6 +23,7 @@ A core tenet of this phase is transparency and grounding:
 ## 2. Implemented Architecture & Components
 
 ### 2.1 Reusable UI Design System (`packages/ui`)
+
 - [`ProvenanceBadge.tsx`](file:///home/surya/Project_dir/Expense_super/packages/ui/src/ProvenanceBadge.tsx):
   - 3-tier badging system with specific color coding and semantic icons:
     - `calculated`: Green/emerald badge (`#10b981`, calculator icon)
@@ -35,6 +38,7 @@ A core tenet of this phase is transparency and grounding:
 - Exported via `packages/ui/src/index.ts`.
 
 ### 2.2 Web Application Integration (`apps/web`)
+
 - [`AIAdvisorSection.tsx`](file:///home/surya/Project_dir/Expense_super/apps/web/src/components/dashboard/AIAdvisorSection.tsx):
   - Connected to reactive `useGuidanceStore`.
   - Interactive "Refresh Guidance" trigger with spinning indicator during generation.
@@ -44,11 +48,13 @@ A core tenet of this phase is transparency and grounding:
   - Grounding guarantee disclaimer banner.
 
 ### 2.3 Desktop Application Integration (`apps/desktop`)
+
 - [`DesktopDashboardView.tsx`](file:///home/surya/Project_dir/Expense_super/apps/desktop/src/components/DesktopDashboardView.tsx):
   - Full AI Financial Guidance card integrated into desktop grid view alongside behavioral personas and goals.
   - Interactive generation button and finding cards with provenance badges.
 
 ### 2.4 Mobile Application Integration (`apps/mobile`)
+
 - [`AIGuidanceCard.tsx`](file:///home/surya/Project_dir/Expense_super/apps/mobile/src/components/AIGuidanceCard.tsx):
   - Native React Native card supporting 5-field findings, 3-tier provenance chips, executive summary, and refresh trigger.
 - Wired into [`apps/mobile/src/App.tsx`](file:///home/surya/Project_dir/Expense_super/apps/mobile/src/App.tsx).

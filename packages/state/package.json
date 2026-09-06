@@ -22,6 +22,7 @@
     "@expense-tracker/analytics": "workspace:*",
     "@expense-tracker/ml-contract": "workspace:*",
     "@expense-tracker/llm-client": "workspace:*",
+    "@expense-tracker/utils": "workspace:*",
     "zustand": "^5.0.15"
   }
 }
