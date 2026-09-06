@@ -30,6 +30,7 @@
     "mobile:typecheck": "pnpm --filter @expense-tracker/mobile run typecheck",
     "build:all": "bash scripts/build-all.sh",
     "package:release": "bash scripts/package-release.sh",
+    "benchmark": "bash scripts/benchmark.sh",
     "validate": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run ml:test"
   },
   "devDependencies": {
