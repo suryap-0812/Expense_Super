@@ -1,0 +1,134 @@
+{
+  "model_name": "kmeans_persona_clusterer",
+  "model_type": "KMeans",
+  "version": "1.0.0",
+  "schema_version": "1.0",
+  "exported_at": "2026-09-06T03:58:22.623986+00:00",
+  "target_opset": 15,
+  "n_clusters": 6,
+  "file_size_bytes": 871,
+  "artifacts": {
+    "onnx_model": "kmeans_clusterer.onnx",
+    "joblib_model": "kmeans_clusterer.joblib"
+  },
+  "input_schema": {
+    "name": "float_input",
+    "tensor_type": "tensor(float)",
+    "data_type": "float32",
+    "shape": [
+      "None",
+      8
+    ],
+    "feature_count": 8,
+    "features": [
+      {
+        "index": 0,
+        "name": "savings_rate",
+        "description": "Standardized behavioral metric: savings_rate",
+        "dtype": "float32"
+      },
+      {
+        "index": 1,
+        "name": "expense_volatility",
+        "description": "Standardized behavioral metric: expense_volatility",
+        "dtype": "float32"
+      },
+      {
+        "index": 2,
+        "name": "transaction_frequency",
+        "description": "Standardized behavioral metric: transaction_frequency",
+        "dtype": "float32"
+      },
+      {
+        "index": 3,
+        "name": "food_ratio",
+        "description": "Standardized behavioral metric: food_ratio",
+        "dtype": "float32"
+      },
+      {
+        "index": 4,
+        "name": "shopping_ratio",
+        "description": "Standardized behavioral metric: shopping_ratio",
+        "dtype": "float32"
+      },
+      {
+        "index": 5,
+        "name": "weekend_spending_ratio",
+        "description": "Standardized behavioral metric: weekend_spending_ratio",
+        "dtype": "float32"
+      },
+      {
+        "index": 6,
+        "name": "average_monthly_income",
+        "description": "Standardized behavioral metric: average_monthly_income",
+        "dtype": "float32"
+      },
+      {
+        "index": 7,
+        "name": "average_monthly_expense",
+        "description": "Standardized behavioral metric: average_monthly_expense",
+        "dtype": "float32"
+      }
+    ]
+  },
+  "output_schema": [
+    {
+      "name": "label",
+      "tensor_type": "tensor(int64)",
+      "data_type": "int64",
+      "shape": [
+        "None",
+        1
+      ],
+      "interpretation": "Cluster assignment index [0..5] mapping to persona archetype."
+    },
+    {
+      "name": "distances",
+      "tensor_type": "tensor(float)",
+      "data_type": "float32",
+      "shape": [
+        "None",
+        6
+      ],
+      "interpretation": "Euclidean distances to all 6 cluster centroid vectors."
+    }
+  ],
+  "preprocessing_requirements": {
+    "normalization": "StandardScaler (z-score normalization: (x - mean) / std)",
+    "missing_values": "Impute with 0.0 before inference",
+    "feature_order_strict": true,
+    "scaler_mean": {
+      "savings_rate": 16.051,
+      "expense_volatility": 0.1986,
+      "transaction_frequency": 32.0461,
+      "food_ratio": 0.2404,
+      "shopping_ratio": 0.1682,
+      "weekend_spending_ratio": 0.3741,
+      "average_monthly_income": 53334.006,
+      "average_monthly_expense": 43955.1574
+    },
+    "scaler_scale": {
+      "savings_rate": 20.3425,
+      "expense_volatility": 0.1319,
+      "transaction_frequency": 6.0541,
+      "food_ratio": 0.0746,
+      "shopping_ratio": 0.0883,
+      "weekend_spending_ratio": 0.1028,
+      "average_monthly_income": 8192.4138,
+      "average_monthly_expense": 9288.9094
+    }
+  },
+  "runtime_assumptions": {
+    "supported_runtimes": [
+      "ONNX Runtime",
+      "ONNX Runtime Web (WASM)",
+      "ONNX Runtime Mobile"
+    ],
+    "min_onnxruntime_version": "1.15.0",
+    "execution_providers": [
+      "CPUExecutionProvider",
+      "WasmExecutionProvider"
+    ],
+    "thread_safety": "Thread-safe for concurrent read-only inference sessions"
+  }
+}
