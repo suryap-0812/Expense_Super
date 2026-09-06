@@ -1,8 +1,8 @@
 {
-  "name": "@expense-tracker/state",
+  "name": "@expense-tracker/llm-client",
   "version": "0.1.0",
   "private": true,
-  "description": "State management stores foundation",
+  "description": "Modular, replaceable LLM Client abstraction and OpenRouter client for financial guidance",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -19,9 +19,7 @@
   "dependencies": {
     "@expense-tracker/domain": "workspace:*",
     "@expense-tracker/schemas": "workspace:*",
-    "@expense-tracker/analytics": "workspace:*",
     "@expense-tracker/ml-contract": "workspace:*",
-    "@expense-tracker/llm-client": "workspace:*",
-    "zustand": "^5.0.15"
+    "zod": "^3.23.8"
   }
 }
