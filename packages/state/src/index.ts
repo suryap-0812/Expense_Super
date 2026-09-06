@@ -11,3 +11,4 @@ export * from "./balance-store.js";
 export * from "./analysis-store.js";
 export * from "./goal-store.js";
 export * from "./settings-store.js";
+export * from "./guidance-store.js";

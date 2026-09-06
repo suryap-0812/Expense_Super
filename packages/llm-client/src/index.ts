@@ -10,3 +10,4 @@ export * from "./prompts.js";
 export * from "./openrouter-client.js";
 export * from "./mock-client.js";
 export * from "./factory.js";
+export * from "./explanation-service.js";
