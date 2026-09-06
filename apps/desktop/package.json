@@ -1,0 +1,34 @@
+{
+  "name": "@expense-tracker/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@expense-tracker/domain": "workspace:*",
+    "@expense-tracker/schemas": "workspace:*",
+    "@expense-tracker/analytics": "workspace:*",
+    "@expense-tracker/ml-contract": "workspace:*",
+    "@expense-tracker/state": "workspace:*",
+    "@expense-tracker/ui": "workspace:*",
+    "@tauri-apps/api": "^2.11.1",
+    "lucide-react": "^1.41.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

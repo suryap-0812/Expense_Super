@@ -24,6 +24,8 @@
     "ml:validate:onnx": "PYTHONPATH=. .venv/bin/python -m ml.src.validation.onnx_runtime_validator",
     "web:dev": "pnpm --filter @expense-tracker/web run dev",
     "web:build": "pnpm --filter @expense-tracker/web run build",
+    "desktop:dev": "pnpm --filter @expense-tracker/desktop run dev",
+    "desktop:build": "pnpm --filter @expense-tracker/desktop run build",
     "validate": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run ml:test"
   },
   "devDependencies": {
@@ -40,6 +42,7 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
     "lucide-react": "^1.41.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
