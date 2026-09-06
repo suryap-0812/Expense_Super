@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-09-06T04:00:55Z",
+  "anomaly_validation": {
+    "total_samples": 1000,
+    "label_matches": 1000,
+    "label_concordance_pct": 100.0,
+    "decision_score_max_abs_error": 6.261164353649207e-08,
+    "decision_score_mean_squared_error": 1.0946627859964175e-15,
+    "sklearn_avg_latency_ms": 0.01181395700007215,
+    "onnx_avg_latency_ms": 0.017077363999987938,
+    "is_equivalent": true
+  },
+  "clustering_validation": {
+    "total_samples": 1000,
+    "label_matches": 1000,
+    "label_concordance_pct": 100.0,
+    "distance_tensor_max_abs_error": 0.00390625,
+    "distance_tensor_mean_squared_error": 8.264519237854984e-07,
+    "sklearn_avg_latency_ms": 0.04267428800005746,
+    "onnx_avg_latency_ms": 0.0004090009999799804,
+    "is_equivalent": true
+  },
+  "batch_scalability_passed": true,
+  "all_models_equivalent": true
+}
