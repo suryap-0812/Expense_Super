@@ -7,8 +7,10 @@ import { GoalsSection } from "./components/dashboard/GoalsSection";
 import { TransactionsSection } from "./components/dashboard/TransactionsSection";
 import { AIAdvisorSection } from "./components/dashboard/AIAdvisorSection";
 import { AddTransactionModal } from "./components/modals/AddTransactionModal";
+import { EditTransactionModal } from "./components/modals/EditTransactionModal";
 import { useTransactionStore, useAnalysisStore, useGoalStore } from "@expense-tracker/state";
 import { createFinancialAnalysisEngine } from "@expense-tracker/ml-contract";
+import type { Transaction } from "@expense-tracker/domain";
 import {
   initialSampleTransactions,
   initialSampleGoals,
@@ -17,6 +19,7 @@ import {
 
 export const App: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
 
   const { transactions, setTransactions, filters } = useTransactionStore();
   const { analysisResult, runAnalysis } = useAnalysisStore();
@@ -70,7 +73,10 @@ export const App: React.FC = () => {
 
         {/* Full-width Transactions Section */}
         <div className="col-12">
-          <TransactionsSection onOpenAddModal={() => setIsAddModalOpen(true)} />
+          <TransactionsSection
+            onOpenAddModal={() => setIsAddModalOpen(true)}
+            onOpenEditModal={(tx) => setEditingTransaction(tx)}
+          />
         </div>
       </div>
 
@@ -79,6 +85,14 @@ export const App: React.FC = () => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onTransactionAdded={triggerAnalysis}
+      />
+
+      {/* Edit Record Modal */}
+      <EditTransactionModal
+        isOpen={editingTransaction !== null}
+        onClose={() => setEditingTransaction(null)}
+        transaction={editingTransaction}
+        onTransactionUpdated={triggerAnalysis}
       />
     </div>
   );

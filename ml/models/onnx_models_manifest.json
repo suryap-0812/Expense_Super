@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-06T05:41:57.713001+00:00",
+  "generated_at": "2026-09-06T05:48:15.301620+00:00",
   "target_opset": 15,
   "models": {
     "anomaly_detector": {
@@ -8,7 +8,7 @@
       "model_type": "IsolationForest",
       "version": "1.0.0",
       "schema_version": "1.0",
-      "exported_at": "2026-09-06T05:41:57.701680+00:00",
+      "exported_at": "2026-09-06T05:48:15.287777+00:00",
       "target_opset": 15,
       "file_size_bytes": 787787,
       "artifacts": {
@@ -162,7 +162,7 @@
       "model_type": "KMeans",
       "version": "1.0.0",
       "schema_version": "1.0",
-      "exported_at": "2026-09-06T05:41:57.712482+00:00",
+      "exported_at": "2026-09-06T05:48:15.300897+00:00",
       "target_opset": 15,
       "n_clusters": 6,
       "file_size_bytes": 871,

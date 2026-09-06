@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Input, Button } from "@expense-tracker/ui";
-import { CreateTransactionSchema } from "@expense-tracker/schemas";
+import { UpdateTransactionSchema } from "@expense-tracker/schemas";
 import { useTransactionStore, useCategoryStore } from "@expense-tracker/state";
 import type { Transaction } from "@expense-tracker/domain";
 
-export interface AddTransactionModalProps {
+export interface EditTransactionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTransactionAdded?: () => void;
+  transaction: Transaction | null;
+  onTransactionUpdated?: () => void;
 }
 
-export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
+export const EditTransactionModal: React.FC<EditTransactionModalProps> = ({
   isOpen,
   onClose,
-  onTransactionAdded,
+  transaction,
+  onTransactionUpdated,
 }) => {
-  const { addTransaction } = useTransactionStore();
+  const { updateTransaction } = useTransactionStore();
   const { categories } = useCategoryStore();
 
   const [type, setType] = useState<"income" | "expense">("expense");
   const [amount, setAmount] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("Food");
   const [paymentMethod, setPaymentMethod] = useState<string>("UPI");
-  const [transactionDate, setTransactionDate] = useState<string>(
-    new Date().toISOString().slice(0, 10),
-  );
+  const [transactionDate, setTransactionDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -39,8 +39,23 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
     "Other",
   ];
 
+  // Populate form fields when transaction changes
+  useEffect(() => {
+    if (transaction) {
+      setType(transaction.type);
+      setAmount(String(transaction.amount));
+      setCategoryId(transaction.categoryId);
+      setPaymentMethod(transaction.paymentMethod);
+      setTransactionDate(transaction.transactionDate);
+      setDescription(transaction.description);
+      setNotes(transaction.notes || "");
+      setErrors({});
+    }
+  }, [transaction]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!transaction) return;
     setErrors({});
 
     const rawPayload = {
@@ -53,7 +68,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       notes: notes.trim().length > 0 ? notes.trim() : undefined,
     };
 
-    const validation = CreateTransactionSchema.safeParse(rawPayload);
+    const validation = UpdateTransactionSchema.safeParse(rawPayload);
 
     if (!validation.success) {
       const fieldErrors: Record<string, string> = {};
@@ -67,8 +82,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       return;
     }
 
-    const newTx: Transaction = {
-      id: `tx_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    updateTransaction(transaction.id, {
       type: validation.data.type,
       amount: validation.data.amount,
       categoryId: validation.data.categoryId,
@@ -76,18 +90,10 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       transactionDate: validation.data.transactionDate,
       description: validation.data.description,
       notes: validation.data.notes,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    });
 
-    addTransaction(newTx);
     onClose();
-    if (onTransactionAdded) onTransactionAdded();
-
-    // Reset form
-    setAmount("");
-    setDescription("");
-    setNotes("");
+    if (onTransactionUpdated) onTransactionUpdated();
   };
 
   const filteredCategories = categories.filter(
@@ -96,7 +102,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add Financial Record">
+    <Modal isOpen={isOpen} onClose={onClose} title="Edit Financial Record">
       <form
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -105,10 +111,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <button
             type="button"
-            onClick={() => {
-              setType("expense");
-              setCategoryId("Food");
-            }}
+            onClick={() => setType("expense")}
             style={{
               flex: 1,
               padding: "0.5rem",
@@ -126,10 +129,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => {
-              setType("income");
-              setCategoryId("Salary");
-            }}
+            onClick={() => setType("income")}
             style={{
               flex: 1,
               padding: "0.5rem",
@@ -267,7 +267,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
             Cancel
           </Button>
           <Button type="submit" variant="primary">
-            Save Record
+            Update Record
           </Button>
         </div>
       </form>
