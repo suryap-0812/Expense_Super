@@ -191,3 +191,31 @@ export function selectFilteredTransactions(
       return filters.sortOrder === "asc" ? comparison : -comparison;
     });
 }
+
+/**
+ * Selector helper computing deterministic financial totals from transaction array.
+ */
+export function selectTransactionSummary(transactions: ReadonlyArray<Transaction>) {
+  let totalIncome = 0;
+  let totalExpense = 0;
+
+  for (const tx of transactions) {
+    if (tx.type === "income") {
+      totalIncome += tx.amount;
+    } else if (tx.type === "expense") {
+      totalExpense += tx.amount;
+    }
+  }
+
+  const roundedIncome = Math.round(totalIncome * 100) / 100;
+  const roundedExpense = Math.round(totalExpense * 100) / 100;
+  const netSavings = Math.round((roundedIncome - roundedExpense) * 100) / 100;
+  const savingsRate = roundedIncome > 0 ? Math.round((netSavings / roundedIncome) * 1000) / 10 : 0;
+
+  return {
+    totalIncome: roundedIncome,
+    totalExpense: roundedExpense,
+    netSavings,
+    savingsRate,
+  };
+}

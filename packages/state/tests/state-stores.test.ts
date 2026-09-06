@@ -14,6 +14,7 @@ import {
   useGoalStore,
   useSettingsStore,
   selectFilteredTransactions,
+  selectTransactionSummary,
 } from "../src";
 
 describe("Phase 19, 20 & 21: Transactions, Bank Balance, and Goals & Allocations State", () => {
@@ -351,5 +352,53 @@ describe("Phase 19, 20 & 21: Transactions, Bank Balance, and Goals & Allocations
     expect(useSettingsStore.getState().currency).toBe("INR");
     useSettingsStore.getState().setCurrency("USD");
     expect(useSettingsStore.getState().currency).toBe("USD");
+  });
+
+  it("calculates deterministic summaries and reports via AnalysisStore and selectTransactionSummary (Phase 22)", () => {
+    const txs: Transaction[] = [
+      {
+        id: "tx_1",
+        type: "income",
+        amount: 60000,
+        categoryId: "Salary",
+        paymentMethod: "Bank Transfer",
+        transactionDate: "2026-05-01",
+        description: "Monthly Salary",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "tx_2",
+        type: "expense",
+        amount: 20000,
+        categoryId: "Rent",
+        paymentMethod: "Net Banking",
+        transactionDate: "2026-05-02",
+        description: "Rent",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+
+    // selectTransactionSummary
+    const summary = selectTransactionSummary(txs);
+    expect(summary.totalIncome).toBe(60000);
+    expect(summary.totalExpense).toBe(20000);
+    expect(summary.netSavings).toBe(40000);
+    expect(summary.savingsRate).toBeCloseTo(66.7, 1);
+
+    // AnalysisStore deterministic getters
+    const analysisStore = useAnalysisStore.getState();
+    const fallbackSummary = analysisStore.getSummary(txs);
+    expect(fallbackSummary.totalIncome).toBe(60000);
+    expect(fallbackSummary.totalExpense).toBe(20000);
+    expect(fallbackSummary.netSavings).toBe(40000);
+
+    const report = analysisStore.getDeterministicReport(txs);
+    expect(report.categorySpending.length).toBe(1);
+    expect(report.categorySpending[0]?.category).toBe("Rent");
+
+    const patternReport = analysisStore.getPatternReport(txs);
+    expect(patternReport.transactionFrequency.totalTransactions).toBe(2);
   });
 });

@@ -219,6 +219,10 @@ importers:
       '@expense-tracker/domain':
         specifier: workspace:*
         version: link:../domain
+    devDependencies:
+      '@expense-tracker/db':
+        specifier: workspace:*
+        version: link:../db
 
   packages/db:
     dependencies:

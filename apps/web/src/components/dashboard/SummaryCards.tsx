@@ -15,11 +15,11 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
   onOpenUpdateBalance,
   onOpenBalanceHistory,
 }) => {
-  const { currentBalance } = useBalanceStore();
-  const { allocations } = useGoalStore();
+  const { currentBalance, getUnallocatedCash } = useBalanceStore();
+  const { getTotalAllocations } = useGoalStore();
 
-  const totalGoalAllocations = Object.values(allocations).reduce((sum, val) => sum + val, 0);
-  const unallocatedCash = Math.max(0, currentBalance - totalGoalAllocations);
+  const totalGoalAllocations = getTotalAllocations();
+  const unallocatedCash = getUnallocatedCash(totalGoalAllocations);
 
   const summary = analysis?.summary ?? {
     totalIncome: 0,

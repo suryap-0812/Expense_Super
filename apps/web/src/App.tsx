@@ -100,7 +100,7 @@ export const App: React.FC = () => {
         {/* Left Column (7 cols): Behavioral ML Insights & Spending Breakdown */}
         <div className="col-7" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           <MLInsightsSection analysis={analysisResult} />
-          <AnalyticsSection transactions={transactions} />
+          <AnalyticsSection transactions={transactions} analysis={analysisResult} />
         </div>
 
         {/* Right Column (5 cols): AI Guidance & Savings Goals */}

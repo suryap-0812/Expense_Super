@@ -18,12 +18,12 @@ interface DesktopDashboardViewProps {
 
 export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ analysis }) => {
   const { transactions } = useTransactionStore();
-  const { goals, allocations } = useGoalStore();
-  const { currentBalance } = useBalanceStore();
+  const { goals, allocations, getTotalAllocations } = useGoalStore();
+  const { currentBalance, getUnallocatedCash } = useBalanceStore();
 
-  const totalGoalAllocations = Object.values(allocations).reduce((sum, val) => sum + val, 0);
+  const totalGoalAllocations = getTotalAllocations();
   const displayBalance = currentBalance > 0 ? currentBalance : 450000;
-  const unallocatedCash = Math.max(0, displayBalance - totalGoalAllocations);
+  const unallocatedCash = getUnallocatedCash(totalGoalAllocations);
 
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 41800;

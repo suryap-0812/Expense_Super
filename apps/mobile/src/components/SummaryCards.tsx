@@ -8,12 +8,12 @@ interface SummaryCardsProps {
 }
 
 export const SummaryCards: React.FC<SummaryCardsProps> = ({ analysis }) => {
-  const { currentBalance } = useBalanceStore();
-  const { allocations } = useGoalStore();
+  const { currentBalance, getUnallocatedCash } = useBalanceStore();
+  const { getTotalAllocations } = useGoalStore();
 
-  const totalGoalAllocations = Object.values(allocations).reduce((sum, val) => sum + val, 0);
-  const unallocatedCash = Math.max(0, (currentBalance || 450000) - totalGoalAllocations);
+  const totalGoalAllocations = getTotalAllocations();
   const displayBalance = currentBalance > 0 ? currentBalance : 450000;
+  const unallocatedCash = getUnallocatedCash(totalGoalAllocations);
 
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 30850;

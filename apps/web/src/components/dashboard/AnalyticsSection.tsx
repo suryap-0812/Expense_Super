@@ -7,15 +7,20 @@ import {
 } from "@expense-tracker/analytics";
 import type { Transaction } from "@expense-tracker/domain";
 
+import type { CategorySpendingItem } from "@expense-tracker/analytics";
+import type { FinancialAnalysisResult } from "@expense-tracker/ml-contract";
+
 export interface AnalyticsSectionProps {
-  transactions: Transaction[];
+  transactions?: Transaction[];
+  analysis?: FinancialAnalysisResult | null;
 }
 
-export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ transactions }) => {
-  const analytics = generateFinancialAnalytics(transactions);
-  const patterns = generatePatternAnalysisReport(transactions);
+export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ transactions = [] }) => {
+  const analytics = React.useMemo(() => generateFinancialAnalytics(transactions), [transactions]);
 
-  const topCategories = analytics.categorySpending.slice(0, 5);
+  const patterns = React.useMemo(() => generatePatternAnalysisReport(transactions), [transactions]);
+
+  const topCategories: CategorySpendingItem[] = analytics.categorySpending.slice(0, 5);
   const weekendPct = Math.round(patterns.weekendBehavior.weekendSpendingRatio * 100);
 
   return (

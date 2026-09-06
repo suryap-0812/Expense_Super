@@ -34,6 +34,7 @@ export interface GoalStoreState {
   // Selectors & Calculations
   getGoalAllocations: (goalId: string) => GoalAllocation[];
   getTotalAllocated: () => number;
+  getTotalAllocations: () => number;
   getGoalsWithProgress: () => GoalWithProgress[];
 }
 
@@ -149,6 +150,10 @@ export const useGoalStore = create<GoalStoreState>((set, get) => ({
   getTotalAllocated: () => {
     const { allocations } = get();
     return Object.values(allocations).reduce((sum, val) => sum + Math.max(0, val), 0);
+  },
+
+  getTotalAllocations: () => {
+    return get().getTotalAllocated();
   },
 
   getGoalsWithProgress: () => {

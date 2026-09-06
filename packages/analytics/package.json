@@ -18,5 +18,8 @@
   },
   "dependencies": {
     "@expense-tracker/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "@expense-tracker/db": "workspace:*"
   }
 }
