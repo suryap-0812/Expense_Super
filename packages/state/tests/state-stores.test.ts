@@ -1,5 +1,11 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import type { Transaction, Goal, Category, BalanceRecord } from "@expense-tracker/domain";
+import type {
+  Transaction,
+  Goal,
+  GoalAllocation,
+  Category,
+  BalanceRecord,
+} from "@expense-tracker/domain";
 import {
   useTransactionStore,
   useCategoryStore,
@@ -10,14 +16,14 @@ import {
   selectFilteredTransactions,
 } from "../src";
 
-describe("Phase 19 & 20: Transaction, Category & Bank Balance State Management", () => {
+describe("Phase 19, 20 & 21: Transactions, Bank Balance, and Goals & Allocations State", () => {
   beforeEach(() => {
     useTransactionStore.getState().clearTransactions();
     useTransactionStore.getState().resetFilters();
     useCategoryStore.getState().resetToDefault();
     useBalanceStore.getState().clearBalanceHistory();
     useAnalysisStore.getState().clearAnalysis();
-    useGoalStore.setState({ goals: [], allocations: {} });
+    useGoalStore.setState({ goals: [], allocations: {}, allocationsHistory: [] });
   });
 
   it("handles complete transaction CRUD workflow", () => {
@@ -252,7 +258,6 @@ describe("Phase 19 & 20: Transaction, Category & Bank Balance State Management",
       createdAt: "2026-05-01T00:00:00Z",
     };
 
-    // Setting history sorts descending by recordedAt
     useBalanceStore.getState().setBalanceHistory([b1, b2]);
     expect(useBalanceStore.getState().currentBalance).toBe(150000);
     expect(useBalanceStore.getState().getLatestBalanceRecord()?.id).toBe("bal_2");
@@ -279,7 +284,7 @@ describe("Phase 19 & 20: Transaction, Category & Bank Balance State Management",
     expect(useBalanceStore.getState().balanceHistory.length).toBe(2);
   });
 
-  it("manages goals and allocations in GoalStore", () => {
+  it("enforces Total Allocations <= Bank Balance and manages Goal Allocations & Reductions", () => {
     const goal: Goal = {
       id: "goal_1",
       name: "Emergency Fund",
@@ -293,11 +298,53 @@ describe("Phase 19 & 20: Transaction, Category & Bank Balance State Management",
     useGoalStore.getState().addGoal(goal);
     expect(useGoalStore.getState().goals.length).toBe(1);
 
-    useGoalStore.getState().allocateToGoal("goal_1", 25000);
-    const goalsWithProgress = useGoalStore.getState().getGoalsWithProgress();
-    expect(goalsWithProgress[0]?.allocatedAmount).toBe(25000);
-    expect(goalsWithProgress[0]?.progressPercentage).toBe(25);
-    expect(goalsWithProgress[0]?.isCompleted).toBe(false);
+    const bankBalance = 50000;
+
+    // 1. Valid allocation under bank balance
+    const alloc1: GoalAllocation = {
+      id: "alloc_1",
+      goalId: "goal_1",
+      amount: 30000,
+      allocationDate: "2026-05-01",
+      note: "Initial deposit",
+      createdAt: new Date().toISOString(),
+    };
+    useGoalStore.getState().allocateToGoal(alloc1, bankBalance);
+
+    let progress = useGoalStore.getState().getGoalsWithProgress()[0];
+    expect(progress?.allocatedAmount).toBe(30000);
+    expect(progress?.progressPercentage).toBe(30);
+    expect(progress?.remainingAmount).toBe(70000);
+    expect(progress?.isCompleted).toBe(false);
+
+    // 2. Invalid allocation exceeding bank balance (Total would be 30000 + 25000 = 55000 > 50000)
+    const allocExceeding: GoalAllocation = {
+      id: "alloc_exceed",
+      goalId: "goal_1",
+      amount: 25000,
+      allocationDate: "2026-05-02",
+      createdAt: new Date().toISOString(),
+    };
+    expect(() => useGoalStore.getState().allocateToGoal(allocExceeding, bankBalance)).toThrow(
+      /would exceed bank balance/,
+    );
+
+    // 3. Fund reduction (releasing money back)
+    useGoalStore.getState().reduceFromGoal("goal_1", 10000, "Emergency withdrawal");
+    progress = useGoalStore.getState().getGoalsWithProgress()[0];
+    expect(progress?.allocatedAmount).toBe(20000);
+    expect(useGoalStore.getState().getGoalAllocations("goal_1").length).toBe(2);
+
+    // 4. Invalid reduction exceeding goal allocation (reducing by 25000 when only 20000 allocated)
+    expect(() => useGoalStore.getState().reduceFromGoal("goal_1", 25000)).toThrow(
+      /Cannot reduce allocation/,
+    );
+
+    // 5. Delete goal cascades and cleans up allocations
+    useGoalStore.getState().deleteGoal("goal_1");
+    expect(useGoalStore.getState().goals.length).toBe(0);
+    expect(useGoalStore.getState().allocations["goal_1"]).toBeUndefined();
+    expect(useGoalStore.getState().getGoalAllocations("goal_1").length).toBe(0);
   });
 
   it("updates settings in SettingsStore", () => {

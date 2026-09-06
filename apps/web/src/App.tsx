@@ -10,6 +10,10 @@ import { AddTransactionModal } from "./components/modals/AddTransactionModal";
 import { EditTransactionModal } from "./components/modals/EditTransactionModal";
 import { UpdateBalanceModal } from "./components/modals/UpdateBalanceModal";
 import { BalanceHistoryModal } from "./components/modals/BalanceHistoryModal";
+import { CreateGoalModal } from "./components/modals/CreateGoalModal";
+import { EditGoalModal } from "./components/modals/EditGoalModal";
+import { GoalAllocationModal } from "./components/modals/GoalAllocationModal";
+import { GoalHistoryModal } from "./components/modals/GoalHistoryModal";
 import {
   useTransactionStore,
   useAnalysisStore,
@@ -17,11 +21,12 @@ import {
   useBalanceStore,
 } from "@expense-tracker/state";
 import { createFinancialAnalysisEngine } from "@expense-tracker/ml-contract";
-import type { Transaction } from "@expense-tracker/domain";
+import type { Transaction, GoalWithProgress } from "@expense-tracker/domain";
 import {
   initialSampleTransactions,
   initialSampleGoals,
   initialSampleAllocations,
+  initialSampleGoalAllocations,
   initialSampleBalanceRecords,
 } from "./data/sample-data";
 
@@ -31,9 +36,15 @@ export const App: React.FC = () => {
   const [isUpdateBalanceOpen, setIsUpdateBalanceOpen] = useState(false);
   const [isBalanceHistoryOpen, setIsBalanceHistoryOpen] = useState(false);
 
+  // Goal Modals State
+  const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState<GoalWithProgress | null>(null);
+  const [allocatingGoal, setAllocatingGoal] = useState<GoalWithProgress | null>(null);
+  const [historyGoal, setHistoryGoal] = useState<GoalWithProgress | null>(null);
+
   const { transactions, setTransactions, filters } = useTransactionStore();
   const { analysisResult, runAnalysis } = useAnalysisStore();
-  const { setGoals } = useGoalStore();
+  const { goals, setGoals } = useGoalStore();
   const { balanceHistory, setBalanceHistory } = useBalanceStore();
 
   const engine = useMemo(() => createFinancialAnalysisEngine(), []);
@@ -42,12 +53,21 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (transactions.length === 0) {
       setTransactions(initialSampleTransactions);
-      setGoals(initialSampleGoals, initialSampleAllocations);
+    }
+    if (goals.length === 0) {
+      setGoals(initialSampleGoals, initialSampleAllocations, initialSampleGoalAllocations);
     }
     if (balanceHistory.length === 0) {
       setBalanceHistory(initialSampleBalanceRecords);
     }
-  }, [setTransactions, setGoals, setBalanceHistory, transactions.length, balanceHistory.length]);
+  }, [
+    setTransactions,
+    setGoals,
+    setBalanceHistory,
+    transactions.length,
+    goals.length,
+    balanceHistory.length,
+  ]);
 
   // Reactive ML Analysis computation whenever transactions or period change
   const triggerAnalysis = React.useCallback(() => {
@@ -86,7 +106,12 @@ export const App: React.FC = () => {
         {/* Right Column (5 cols): AI Guidance & Savings Goals */}
         <div className="col-5" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           <AIAdvisorSection />
-          <GoalsSection />
+          <GoalsSection
+            onOpenCreateGoal={() => setIsCreateGoalOpen(true)}
+            onOpenEditGoal={(goal) => setEditingGoal(goal)}
+            onOpenAllocation={(goal) => setAllocatingGoal(goal)}
+            onOpenHistory={(goal) => setHistoryGoal(goal)}
+          />
         </div>
 
         {/* Full-width Transactions Section */}
@@ -123,6 +148,30 @@ export const App: React.FC = () => {
       <BalanceHistoryModal
         isOpen={isBalanceHistoryOpen}
         onClose={() => setIsBalanceHistoryOpen(false)}
+      />
+
+      {/* Create Goal Modal */}
+      <CreateGoalModal isOpen={isCreateGoalOpen} onClose={() => setIsCreateGoalOpen(false)} />
+
+      {/* Edit Goal Modal */}
+      <EditGoalModal
+        isOpen={editingGoal !== null}
+        onClose={() => setEditingGoal(null)}
+        goal={editingGoal}
+      />
+
+      {/* Goal Allocation / Reduction Modal */}
+      <GoalAllocationModal
+        isOpen={allocatingGoal !== null}
+        onClose={() => setAllocatingGoal(null)}
+        goal={allocatingGoal}
+      />
+
+      {/* Goal Allocation History Modal */}
+      <GoalHistoryModal
+        isOpen={historyGoal !== null}
+        onClose={() => setHistoryGoal(null)}
+        goal={historyGoal}
       />
     </div>
   );

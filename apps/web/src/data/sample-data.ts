@@ -1,4 +1,4 @@
-import type { Transaction, Goal, BalanceRecord } from "@expense-tracker/domain";
+import type { Transaction, Goal, GoalAllocation, BalanceRecord } from "@expense-tracker/domain";
 
 export const initialSampleTransactions: Transaction[] = [
   // 2026-05
@@ -171,6 +171,41 @@ export const initialSampleAllocations: Record<string, number> = {
   goal_02: 120000,
   goal_03: 45000,
 };
+
+export const initialSampleGoalAllocations: GoalAllocation[] = [
+  {
+    id: "alloc_01",
+    goalId: "goal_01",
+    amount: 100000,
+    allocationDate: "2026-03-15",
+    note: "Initial emergency fund reserve",
+    createdAt: "2026-03-15T00:00:00Z",
+  },
+  {
+    id: "alloc_02",
+    goalId: "goal_01",
+    amount: 65000,
+    allocationDate: "2026-04-15",
+    note: "Monthly savings allocation",
+    createdAt: "2026-04-15T00:00:00Z",
+  },
+  {
+    id: "alloc_03",
+    goalId: "goal_02",
+    amount: 120000,
+    allocationDate: "2026-04-20",
+    note: "Tech gear savings contribution",
+    createdAt: "2026-04-20T00:00:00Z",
+  },
+  {
+    id: "alloc_04",
+    goalId: "goal_03",
+    amount: 45000,
+    allocationDate: "2026-05-01",
+    note: "Vacation fund seed",
+    createdAt: "2026-05-01T00:00:00Z",
+  },
+];
 
 export const initialSampleBalanceRecords: BalanceRecord[] = [
   {
