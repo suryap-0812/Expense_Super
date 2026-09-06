@@ -21,5 +21,8 @@
     "@expense-tracker/schemas": "workspace:*",
     "@expense-tracker/analytics": "workspace:*",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@expense-tracker/db": "workspace:*"
   }
 }

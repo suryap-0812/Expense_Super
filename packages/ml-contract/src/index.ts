@@ -8,3 +8,4 @@ export const ML_CONTRACT_PACKAGE_VERSION = "0.1.0";
 export * from "./types.js";
 export * from "./generator.js";
 export * from "./engine.js";
+export * from "./local-onnx-provider.js";
