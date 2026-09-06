@@ -1,7 +1,13 @@
 /**
  * @expense-tracker/ui
- * Foundation for shared UI components and design tokens.
- * UI components will be implemented in later UI phases.
+ * Shared UI component library and design system tokens.
  */
 
 export const UI_PACKAGE_VERSION = "0.1.0";
+
+export * from "./tokens";
+export * from "./Button";
+export * from "./Card";
+export * from "./Badge";
+export * from "./Modal";
+export * from "./Input";

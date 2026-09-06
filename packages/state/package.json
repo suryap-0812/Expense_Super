@@ -15,5 +15,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc -b"
+  },
+  "dependencies": {
+    "@expense-tracker/domain": "workspace:*",
+    "@expense-tracker/schemas": "workspace:*",
+    "@expense-tracker/analytics": "workspace:*",
+    "@expense-tracker/ml-contract": "workspace:*",
+    "zustand": "^5.0.15"
   }
 }

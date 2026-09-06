@@ -15,5 +15,13 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc -b"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }
