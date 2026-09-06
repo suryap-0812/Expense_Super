@@ -4,6 +4,7 @@ node_modules/
 
 # Build artifacts & caches
 dist/
+dist-release/
 build/
 .turbo/
 *.tsbuildinfo
