@@ -119,6 +119,15 @@ export type {
   UpdateUserSettingsInput,
 } from "./settings.schema.js";
 
+// AI Insights
+export { InsightTypeSchema, AIInsightSchema, CreateAIInsightSchema } from "./insight.schema.js";
+
+export type {
+  InsightType as InsightTypeDto,
+  AIInsightDto,
+  CreateAIInsightInput as CreateAIInsightInputDto,
+} from "./insight.schema.js";
+
 // Data Transfer (Backup / Restore)
 export { DataExportSchema, DataImportSchema } from "./data-transfer.schema.js";
 

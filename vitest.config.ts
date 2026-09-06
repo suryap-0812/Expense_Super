@@ -21,6 +21,7 @@ export default defineConfig({
       "@expense-tracker/ml-contract": path.resolve(__dirname, "./packages/ml-contract/src"),
       "@expense-tracker/ui": path.resolve(__dirname, "./packages/ui/src"),
       "@expense-tracker/utils": path.resolve(__dirname, "./packages/utils/src"),
+      "@expense-tracker/db": path.resolve(__dirname, "./packages/db/src"),
     },
   },
 });
