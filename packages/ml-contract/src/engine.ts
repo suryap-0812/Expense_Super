@@ -221,9 +221,9 @@ export class HybridFinancialAnalysisEngine implements FinancialAnalysisEngine {
 
   async analyze(input: FinancialAnalysisInput): Promise<FinancialAnalysisResult> {
     const startTime = performance.now();
-    const transactions = input.transactions;
-    const period = input.period ?? "all-time";
-    const disableML = input.options?.disableML ?? false;
+    const transactions = input?.transactions ?? [];
+    const period = input?.period ?? "all-time";
+    const disableML = input?.options?.disableML ?? false;
 
     // 1. Evaluate Data Sufficiency & Cold Start (Section 32)
     const txCount = transactions.length;

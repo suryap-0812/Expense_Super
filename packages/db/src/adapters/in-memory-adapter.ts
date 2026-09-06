@@ -238,9 +238,20 @@ export class InMemorySqliteAdapter implements ISqliteDriver {
       return fn();
     }
     this.inTransaction = true;
+    const snapshot = new Map<string, Map<string, Record<string, unknown>>>();
+    for (const [tName, tMap] of this.tables.entries()) {
+      const copyMap = new Map<string, Record<string, unknown>>();
+      for (const [k, v] of tMap.entries()) {
+        copyMap.set(k, { ...v });
+      }
+      snapshot.set(tName, copyMap);
+    }
     try {
       const result = await fn();
       return result;
+    } catch (err) {
+      this.tables = snapshot;
+      throw err;
     } finally {
       this.inTransaction = false;
     }
