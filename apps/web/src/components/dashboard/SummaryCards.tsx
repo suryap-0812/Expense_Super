@@ -1,5 +1,13 @@
 import React from "react";
-import { ArrowDownRight, ArrowUpRight, Wallet, Coins, History, Edit2 } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Wallet,
+  Coins,
+  History,
+  Edit2,
+  PiggyBank,
+} from "lucide-react";
 import { Card, Badge } from "@expense-tracker/ui";
 import type { FinancialAnalysisResult } from "@expense-tracker/ml-contract";
 import { useBalanceStore, useGoalStore } from "@expense-tracker/state";
@@ -36,7 +44,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
         gap: "1rem",
       }}
     >
@@ -56,7 +64,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             </div>
             <div
               style={{
-                fontSize: "1.5rem",
+                fontSize: "1.45rem",
                 fontWeight: 700,
                 marginTop: "0.25rem",
                 color: "#f8fafc",
@@ -87,9 +95,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
             borderTop: "1px solid rgba(255, 255, 255, 0.06)",
           }}
         >
-          <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)" }}>
-            Authoritative balance
-          </span>
+          <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)" }}>Verified ledger</span>
           <div style={{ display: "flex", gap: "0.4rem" }}>
             {onOpenUpdateBalance && (
               <button
@@ -135,16 +141,16 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
       </Card>
 
-      {/* 2. Unallocated Cash */}
+      {/* 2. Available to Spend (Unallocated Cash) */}
       <Card variant="glass" padding="md">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-              Unallocated Cash
+              Available to Spend
             </span>
             <div
               style={{
-                fontSize: "1.5rem",
+                fontSize: "1.45rem",
                 fontWeight: 700,
                 marginTop: "0.25rem",
                 color: unallocatedCash >= 0 ? "#34d399" : "#f43f5e",
@@ -170,15 +176,20 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
         </div>
       </Card>
 
-      {/* 3. Total Income */}
+      {/* 3. Received (Income) */}
       <Card variant="glass" padding="md">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-              Monthly Income
+              Received (Inflow)
             </span>
             <div
-              style={{ fontSize: "1.5rem", fontWeight: 700, marginTop: "0.25rem" }}
+              style={{
+                fontSize: "1.45rem",
+                fontWeight: 700,
+                marginTop: "0.25rem",
+                color: "#10b981",
+              }}
               className="num-mono"
             >
               ₹{summary.totalIncome.toLocaleString("en-IN")}
@@ -196,19 +207,24 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
           </div>
         </div>
         <div style={{ fontSize: "0.6875rem", color: "#10b981", marginTop: "0.5rem" }}>
-          Inflow verified from transactions
+          Total verified income
         </div>
       </Card>
 
-      {/* 4. Total Expense & Savings Rate */}
+      {/* 4. Spent (Expenses) */}
       <Card variant="glass" padding="md">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-              Monthly Expenses
+              Spent (Outflow)
             </span>
             <div
-              style={{ fontSize: "1.5rem", fontWeight: 700, marginTop: "0.25rem" }}
+              style={{
+                fontSize: "1.45rem",
+                fontWeight: 700,
+                marginTop: "0.25rem",
+                color: "#f43f5e",
+              }}
               className="num-mono"
             >
               ₹{summary.totalExpense.toLocaleString("en-IN")}
@@ -226,10 +242,52 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({
           </div>
         </div>
         <div style={{ fontSize: "0.6875rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
-          Savings Rate:{" "}
-          <strong style={{ color: isHealthySavings ? "#10b981" : "#f59e0b" }}>
-            {savingsRateVal.toFixed(1)}%
-          </strong>
+          Total period expenditure
+        </div>
+      </Card>
+
+      {/* 5. Net Savings & Savings Rate */}
+      <Card variant="glass" padding="md">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500 }}>
+              Net Savings
+            </span>
+            <div
+              style={{
+                fontSize: "1.45rem",
+                fontWeight: 700,
+                marginTop: "0.25rem",
+                color: summary.netSavings >= 0 ? "#6366f1" : "#f43f5e",
+              }}
+              className="num-mono"
+            >
+              ₹{summary.netSavings.toLocaleString("en-IN")}
+            </div>
+          </div>
+          <div
+            style={{
+              padding: "0.5rem",
+              borderRadius: "0.5rem",
+              background: "rgba(99, 102, 241, 0.12)",
+              color: "#818cf8",
+            }}
+          >
+            <PiggyBank size={18} />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "0.5rem",
+          }}
+        >
+          <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)" }}>Rate:</span>
+          <Badge variant={isHealthySavings ? "success" : "warning"} size="sm">
+            {savingsRateVal.toFixed(1)}% Saved
+          </Badge>
         </div>
       </Card>
     </div>

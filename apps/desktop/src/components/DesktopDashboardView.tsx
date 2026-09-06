@@ -10,6 +10,7 @@ import {
   Tag,
   Wallet,
   Coins,
+  PiggyBank,
 } from "lucide-react";
 
 interface DesktopDashboardViewProps {
@@ -27,6 +28,7 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
 
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 41800;
+  const netSavings = analysis?.summary.netSavings ?? totalIncome - totalExpense;
   const savingsRate = analysis?.summary.savingsRate ?? 44.3;
   const archetype = analysis?.persona?.archetype ?? "Balanced Optimizer";
   const archetypeDesc =
@@ -35,11 +37,11 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* 4 Summary Cards */}
+      {/* 5 Summary Cards */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
           gap: "1rem",
         }}
       >
@@ -65,7 +67,7 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
             >
               Bank Balance (Manual)
             </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <div style={{ fontSize: "1.45rem", fontWeight: 700, color: "var(--text-primary)" }}>
               ₹{displayBalance.toLocaleString("en-IN")}
             </div>
           </div>
@@ -91,9 +93,9 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                 letterSpacing: "0.05em",
               }}
             >
-              Unallocated Cash
+              Available to Spend
             </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <div style={{ fontSize: "1.45rem", fontWeight: 700, color: "var(--text-primary)" }}>
               ₹{unallocatedCash.toLocaleString("en-IN")}
             </div>
           </div>
@@ -119,9 +121,9 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                 letterSpacing: "0.05em",
               }}
             >
-              Monthly Income
+              Received (Inflow)
             </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <div style={{ fontSize: "1.45rem", fontWeight: 700, color: "#10b981" }}>
               ₹{totalIncome.toLocaleString("en-IN")}
             </div>
           </div>
@@ -147,13 +149,38 @@ export const DesktopDashboardView: React.FC<DesktopDashboardViewProps> = ({ anal
                 letterSpacing: "0.05em",
               }}
             >
-              Monthly Expenses
+              Spent (Outflow)
             </div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
-              ₹{totalExpense.toLocaleString("en-IN")}{" "}
-              <span style={{ fontSize: "0.875rem", color: "#818cf8" }}>
-                ({savingsRate !== null ? `${savingsRate.toFixed(0)}%` : ""} saved)
-              </span>
+            <div style={{ fontSize: "1.45rem", fontWeight: 700, color: "#f43f5e" }}>
+              ₹{totalExpense.toLocaleString("en-IN")}
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
+              background: "rgba(99, 102, 241, 0.15)",
+              color: "#818cf8",
+            }}
+          >
+            <PiggyBank style={{ width: "1.5rem", height: "1.5rem" }} />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                color: "var(--text-secondary)",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Net Savings ({savingsRate !== null ? `${savingsRate.toFixed(0)}%` : ""})
+            </div>
+            <div style={{ fontSize: "1.45rem", fontWeight: 700, color: "#818cf8" }}>
+              ₹{netSavings.toLocaleString("en-IN")}
             </div>
           </div>
         </div>

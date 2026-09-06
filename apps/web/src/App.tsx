@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Header } from "./components/layout/Header";
 import { SummaryCards } from "./components/dashboard/SummaryCards";
 import { MLInsightsSection } from "./components/dashboard/MLInsightsSection";
+import { SpendingTrendsSection } from "./components/dashboard/SpendingTrendsSection";
 import { AnalyticsSection } from "./components/dashboard/AnalyticsSection";
 import { GoalsSection } from "./components/dashboard/GoalsSection";
 import { TransactionsSection } from "./components/dashboard/TransactionsSection";
@@ -97,21 +98,22 @@ export const App: React.FC = () => {
 
       {/* Main Grid: Analytical & Behavioral Sections */}
       <div className="dashboard-grid">
-        {/* Left Column (7 cols): Behavioral ML Insights & Spending Breakdown */}
+        {/* Left Column (7 cols): Monthly Trends & Spending Breakdown */}
         <div className="col-7" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <MLInsightsSection analysis={analysisResult} />
+          <SpendingTrendsSection transactions={transactions} />
           <AnalyticsSection transactions={transactions} analysis={analysisResult} />
         </div>
 
-        {/* Right Column (5 cols): AI Guidance & Savings Goals */}
+        {/* Right Column (5 cols): ML Insights, Goals & AI Advisor */}
         <div className="col-5" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <AIAdvisorSection />
+          <MLInsightsSection analysis={analysisResult} />
           <GoalsSection
             onOpenCreateGoal={() => setIsCreateGoalOpen(true)}
             onOpenEditGoal={(goal) => setEditingGoal(goal)}
             onOpenAllocation={(goal) => setAllocatingGoal(goal)}
             onOpenHistory={(goal) => setHistoryGoal(goal)}
           />
+          <AIAdvisorSection />
         </div>
 
         {/* Full-width Transactions Section */}

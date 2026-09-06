@@ -17,6 +17,7 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ analysis }) => {
 
   const totalIncome = analysis?.summary.totalIncome ?? 75000;
   const totalExpense = analysis?.summary.totalExpense ?? 30850;
+  const netSavings = analysis?.summary.netSavings ?? totalIncome - totalExpense;
   const savingsRate = analysis?.summary.savingsRate ?? 58.8;
 
   return (
@@ -29,25 +30,32 @@ export const SummaryCards: React.FC<SummaryCardsProps> = ({ analysis }) => {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.label}>Unallocated Cash</Text>
+        <Text style={styles.label}>Available to Spend</Text>
         <Text style={[styles.value, { color: "#34d399" }]}>
           ₹{unallocatedCash.toLocaleString("en-IN")}
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.label}>Monthly Income</Text>
+        <Text style={styles.label}>Received (Inflow)</Text>
         <Text style={[styles.value, { color: "#10b981" }]}>
           ₹{totalIncome.toLocaleString("en-IN")}
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.label}>Expenses / Savings</Text>
+        <Text style={styles.label}>Spent (Outflow)</Text>
         <Text style={[styles.value, { color: "#f43f5e" }]}>
-          ₹{totalExpense.toLocaleString("en-IN")}{" "}
-          <Text style={{ fontSize: 12, color: "#818cf8" }}>
-            ({savingsRate !== null ? `${savingsRate.toFixed(0)}%` : ""})
+          ₹{totalExpense.toLocaleString("en-IN")}
+        </Text>
+      </View>
+
+      <View style={[styles.card, styles.fullCard]}>
+        <Text style={styles.label}>Net Savings</Text>
+        <Text style={[styles.value, { color: "#818cf8" }]}>
+          ₹{netSavings.toLocaleString("en-IN")}{" "}
+          <Text style={{ fontSize: 13, color: "#34d399" }}>
+            ({savingsRate !== null ? `${savingsRate.toFixed(1)}%` : ""} rate)
           </Text>
         </Text>
       </View>
@@ -72,6 +80,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
   },
+  fullCard: {
+    flexBasis: "100%",
+  },
   label: {
     fontSize: 11,
     fontWeight: "600",
@@ -80,7 +91,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   value: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
     marginTop: 6,
   },
